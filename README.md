@@ -3,10 +3,7 @@ Tradução para o português brasileiro do jogo *Star Citizen*.
 
 Esta tradução não iniciou-se do zero. Estamos apenas complementando e adequando. 
 
-Asimov Inc. aka "dormininhos do espaço"
-(https://robertsspaceindustries.com/orgs/SSLEEPERS)
-
-Envie sua contribuição na opção acima "Issues"
+Envie sua contribuição na opção acima "Issues" para termos uma boa curadoria neste projeto, caso assim deseje.
 
 Instruções
 --------
