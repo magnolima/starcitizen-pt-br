@@ -17,7 +17,6 @@ Instruções
 
 Ferramenta TradutorSC
 --------
-
 Publicamos o primeiro Release (1.0.2) da ferramenta de tradução, ironicamente está toda em Português... Caso deseje compilar/alterar os fontes estão disponíveis para Delphi na pasta \TradutorSC
 
 For developers there few dependences:
@@ -28,5 +27,8 @@ For developers there few dependences:
 
 You should also install or remove (if you would like to) the theme styles.
 
+Preview:
+
+[<img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/YOUTUBE--SOCIAL-PLAY.png" width="50%">](https://youtu.be/wFVXMS7CXKU "Tradutor SC")
 
 
