@@ -115,6 +115,8 @@ type
       Panel5: TPanel;
       CompararTags1: TMenuItem;
       Label4: TLabel;
+      LocalizaoStarCitizen1: TMenuItem;
+      ImplantarTraduo1: TMenuItem;
       procedure btnInterromperClick(Sender: TObject);
       procedure FormShow(Sender: TObject);
       procedure FormCreate(Sender: TObject);
@@ -146,6 +148,8 @@ type
         State: TGridDrawState);
       procedure sbImportarNovasTagsClick(Sender: TObject);
       procedure CompararTags1Click(Sender: TObject);
+      procedure LocalizaoStarCitizen1Click(Sender: TObject);
+      procedure ImplantarTraduo1Click(Sender: TObject);
    private
       FEngine: TOAIEngine;
       FChatGPT: TOpenAI;
@@ -175,6 +179,7 @@ type
       procedure GetTraducao(const ADatasource: TDataSource);
       procedure AtualizarTraducao;
       function NewTag(var AQuery: TFDQuery; ATag: string): Boolean;
+      procedure SelecionarDiretorioSC;
       { Private declarations }
    public
       { Public declarations }
@@ -190,7 +195,7 @@ implementation
 {$R *.dfm}
 
 uses
-   Clipbrd, uTradutor.Novatag, uTradutor.Sobre, uTradutor.CompararTags;
+   FileCtrl, Clipbrd, uTradutor.Novatag, uTradutor.Sobre, uTradutor.CompararTags;
 
 procedure TEdit.CNCommand(var Message: TWMCommand);
 begin
@@ -242,6 +247,7 @@ begin
    configuracao[1] := 'openai_key:' + EncodeString(TradutorConfig.OpenaiKey);
    configuracao[2] := 'prompt-translate:' + StringReplace(TradutorConfig.PromptTranslate, #13, '\n', [rfReplaceAll]);
    configuracao[3] := 'prompt-enhance:' + StringReplace(TradutorConfig.PromptEnhance, #13, '\n', [rfReplaceAll]);
+   configuracao[4] := 'localization-folder:' + TradutorConfig.LocalizationFolder;
    TFile.WriteAllLines(SC_CONFIG, configuracao, TEncoding.UTF8);
 end;
 
@@ -272,6 +278,8 @@ begin
             TradutorConfig.PromptTranslate := value;
          if item.Contains('prompt-enhance') then
             TradutorConfig.PromptEnhance := value;
+         if item.Contains('localization-folder') then
+            TradutorConfig.LocalizationFolder := value;
       end;
 
    end;
@@ -763,6 +771,28 @@ begin
    end;
 end;
 
+procedure TfrmTradutorSC.SelecionarDiretorioSC;
+const
+   SELDIRHELP = 1000;
+var
+   Dir: string;
+begin
+   Dir := TradutorConfig.LocalizationFolder;
+   if Dir.IsEmpty then
+      Dir := DEFAULT_LOCALIZATION_FOLDER + LOCALIZATION_PTBR;
+
+   if GetFolderDialog(Self.Handle, 'Instalação Star Citizen', Dir) then
+   begin
+      TradutorConfig.LocalizationFolder := Dir;
+      SalvarConfiguracao();
+   end;
+end;
+
+procedure TfrmTradutorSC.LocalizaoStarCitizen1Click(Sender: TObject);
+begin
+   SelecionarDiretorioSC();
+end;
+
 procedure TfrmTradutorSC.AtualizarDatabase(const id: Integer; const ATag, AValor, AOldValor: string);
 var
    lQuery: TFDQuery;
@@ -1014,6 +1044,29 @@ begin
    Panel2.Enabled := AEnabled;
    Panel4.Enabled := AEnabled;
    btnInterromper.Visible := not AEnabled;
+end;
+
+procedure TfrmTradutorSC.ImplantarTraduo1Click(Sender: TObject);
+begin
+   if TradutorConfig.LocalizationFolder.IsEmpty then
+      SelecionarDiretorioSC();
+   if TradutorConfig.LocalizationFolder.IsEmpty or (not DirectoryExists(TradutorConfig.LocalizationFolder)) then
+   begin
+      ShowMessage('Pasta não encontrada, confirme a localização');
+      Exit;
+   end;
+
+   if MessageDlg('Esta operação irá implantar o arquivo "global.ini" traduzido diretamente na pasta de localização.'#13#13+
+    'Local: '+TradutorConfig.LocalizationFolder+#13'Continuar?', TMsgDlgType.mtWarning,
+     [TMsgDlgBtn.mbNo, TMsgDlgBtn.mbYes], 0) = mrYes then
+   begin
+      try
+         ExportarGlobal(TradutorConfig.LocalizationFolder + '\' + GLOBAL_INI);
+      except
+         ShowMessage('Erro ao tentar implantar arquivo de Localização.');
+      end;
+   end;
+
 end;
 
 procedure TfrmTradutorSC.ImportacaoConcluida;

@@ -44,7 +44,7 @@ object frmTradutorSC: TfrmTradutorSC
     end
     object Edit1: TEdit
       Left = 12
-      Top = 19
+      Top = 15
       Width = 577
       Height = 33
       Margins.Left = 5
@@ -840,6 +840,10 @@ object frmTradutorSC: TfrmTradutorSC
         Caption = 'Exportar Global.ini'
         OnClick = ExportarGlobalini1Click
       end
+      object ImplantarTraduo1: TMenuItem
+        Caption = 'Implantar Tradu'#231#227'o'
+        OnClick = ImplantarTraduo1Click
+      end
       object N5: TMenuItem
         Caption = '-'
       end
@@ -864,6 +868,10 @@ object frmTradutorSC: TfrmTradutorSC
       object EditarpromptChatGPT1: TMenuItem
         Caption = 'Editar prompt ChatGPT'
         OnClick = EditarpromptChatGPT1Click
+      end
+      object LocalizaoStarCitizen1: TMenuItem
+        Caption = 'Localiza'#231#227'o da instala'#231#227'o Star Citizen'
+        OnClick = LocalizaoStarCitizen1Click
       end
     end
     object MenuTema1: TMenuItem

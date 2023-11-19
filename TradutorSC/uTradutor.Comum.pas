@@ -3,12 +3,19 @@ unit uTradutor.Comum;
 interface
 
 const
-   ITENS_CONFIG = 4;
+   ITENS_CONFIG = 5;
    DEFAULT_LOCALE = 'ptbr';
    ORIGINAL_LOCALE = 'enus';
    BOM_CHARACTER = #$FEFF;
+   GLOBAL_INI = 'global.ini';
    SC_CONFIG = '.\tradutorsc.conf';
    DATABASE_NAME = 'global-sc.db';
+   MAX_PATH = 1024;
+   LOCALIZATION_PTBR = 'portuguese_(brazil)';
+   LOCALIZATION_EN = 'english';
+   LOCALIZATION_ES = 'spanish_(spain)';
+
+   DEFAULT_LOCALIZATION_FOLDER = 'C:\Program Files\Roberts Space Industries\StarCitizen\LIVE\data\Localization\';
    PROMPT_TRANSLATE =
      'Traduza para Português Brasileiro o texto abaixo, ignore termos universais comuns do inglês como termos ' +
      'técnicos. O contexto da palavra inglesa "ship" normalmente se refere a nave espacial e não navio:\n{original}';
@@ -33,14 +40,16 @@ type
       OpenaiKey: string;
       PromptTranslate: string;
       PromptEnhance: string;
+      LocalizationFolder: string;
    end;
 
 function GetWindowsProgramVersion: String;
+function GetFolderDialog(Handle: Integer; Caption: string; var strFolder: string): Boolean;
 
 implementation
 
 uses
-  Windows, System.SysUtils;
+  Windows, System.SysUtils, ShlObj;
 
 function GetWindowsProgramVersion: String;
 var
@@ -72,6 +81,57 @@ begin
    end;
    Result := Format('%d.%d.%d.%d', [major, minor, release, build]);
    FreeMem(VerInfo, VerInfoSize);
+end;
+
+function BrowseCallbackProc(hwnd: HWND; uMsg: UINT; lParam: LPARAM; lpData: LPARAM): Integer; stdcall;
+begin
+  if (uMsg = BFFM_INITIALIZED) then
+    SendMessage(hwnd, BFFM_SETSELECTION, 1, lpData);
+  BrowseCallbackProc := 0;
+end;
+
+function GetFolderDialog(Handle: Integer; Caption: string; var strFolder: string): Boolean;
+const
+  BIF_STATUSTEXT           = $0004;
+  BIF_NEWDIALOGSTYLE       = $0040;
+  BIF_RETURNONLYFSDIRS     = $0080;
+  BIF_SHAREABLE            = $0100;
+  BIF_USENEWUI             = BIF_EDITBOX or BIF_NEWDIALOGSTYLE;
+
+var
+  BrowseInfo: TBrowseInfo;
+  ItemIDList: PItemIDList;
+  JtemIDList: PItemIDList;
+  Path: PWideChar;
+begin
+  Result := False;
+  Path := StrAlloc(MAX_PATH);
+  SHGetSpecialFolderLocation(Handle, CSIDL_DRIVES, JtemIDList);
+  with BrowseInfo do
+  begin
+    hwndOwner := GetActiveWindow;
+    pidlRoot := JtemIDList;
+    SHGetSpecialFolderLocation(hwndOwner, CSIDL_DRIVES, JtemIDList);
+
+    { return display name of item selected }
+    pszDisplayName := StrAlloc(MAX_PATH);
+
+    { set the title of dialog }
+    lpszTitle := PChar(Caption);//'Select the folder';
+    { flags that control the return stuff }
+    lpfn := @BrowseCallbackProc;
+    { extra info that's passed back in callbacks }
+    lParam := LongInt(PChar(strFolder));
+  end;
+
+  ItemIDList := SHBrowseForFolder(BrowseInfo);
+
+  if (ItemIDList <> nil) then
+    if SHGetPathFromIDList(ItemIDList, Path) then
+    begin
+      strFolder := Path;
+      Result := True
+    end;
 end;
 
 end.
