@@ -8,7 +8,7 @@ uses
    Vcl.Imaging.pngimage;
 
 const
-   AUTHOR = '2023 por Magno Lima';
+   AUTHOR = '2024 por Magno Lima';
 
 type
    TfrmSobre = class(TForm)
@@ -19,7 +19,6 @@ type
       SkLabel3: TSkLabel;
       Panel1: TPanel;
       procedure Button1Click(Sender: TObject);
-      procedure FormShow(Sender: TObject);
    private
       { Private declarations }
    public
@@ -39,14 +38,6 @@ uses
 procedure TfrmSobre.Button1Click(Sender: TObject);
 begin
    Close;
-end;
-
-procedure TfrmSobre.FormShow(Sender: TObject);
-var
-   version: string;
-begin
-   version := GetWindowsProgramVersion;
-   SkLabel2.Caption := 'V.' + version + ' - '+ AUTHOR;
 end;
 
 end.

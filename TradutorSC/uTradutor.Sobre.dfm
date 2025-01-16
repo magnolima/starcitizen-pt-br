@@ -1,9 +1,13 @@
 object frmSobre: TfrmSobre
   Left = 0
   Top = 0
+  Margins.Left = 5
+  Margins.Top = 5
+  Margins.Right = 5
+  Margins.Bottom = 5
   BorderStyle = bsDialog
   ClientHeight = 594
-  ClientWidth = 607
+  ClientWidth = 626
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,13 +15,12 @@ object frmSobre: TfrmSobre
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poMainFormCenter
-  OnShow = FormShow
   PixelsPerInch = 144
   TextHeight = 25
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 607
+    Width = 626
     Height = 594
     Margins.Left = 5
     Margins.Top = 5
@@ -28,12 +31,10 @@ object frmSobre: TfrmSobre
     ParentBackground = False
     TabOrder = 0
     StyleElements = []
-    ExplicitWidth = 595
-    ExplicitHeight = 588
     object Image2: TImage
       AlignWithMargins = True
       Left = 84
-      Top = 103
+      Top = 104
       Width = 300
       Height = 300
       Margins.Left = 5
@@ -1384,7 +1385,7 @@ object frmSobre: TfrmSobre
       AlignWithMargins = True
       Left = 6
       Top = 6
-      Width = 595
+      Width = 614
       Height = 45
       Margins.Left = 5
       Margins.Top = 5
@@ -1398,15 +1399,13 @@ object frmSobre: TfrmSobre
         item
           Caption = 'Tradutor Star Citizen (pt-br)'
         end>
-      ExplicitLeft = 76
-      ExplicitTop = 10
-      ExplicitWidth = 468
+      ExplicitWidth = 605
     end
     object SkLabel2: TSkLabel
       AlignWithMargins = True
       Left = 6
       Top = 61
-      Width = 595
+      Width = 614
       Height = 32
       Margins.Left = 5
       Margins.Top = 5
@@ -1417,17 +1416,15 @@ object frmSobre: TfrmSobre
       TextSettings.HorzAlign = Center
       Words = <
         item
-          Caption = 'V1.0 - 2023 por Magno Lima'
+          Caption = '2025 por Magno Lima - 1.0.0.250106'
         end>
-      ExplicitLeft = 12
-      ExplicitTop = 49
-      ExplicitWidth = 612
+      ExplicitTop = 62
     end
     object SkLabel3: TSkLabel
       AlignWithMargins = True
       Left = 9
       Top = 404
-      Width = 589
+      Width = 608
       Height = 177
       Margins.Left = 8
       Margins.Top = 5
@@ -1454,14 +1451,13 @@ object frmSobre: TfrmSobre
           Name = 'Item 1'
           StyledSettings = [Family, Style]
         end>
-      ExplicitTop = 393
-      ExplicitWidth = 606
+      ExplicitWidth = 599
     end
     object Button1: TButton
-      Left = 433
+      Left = 434
       Top = 225
       Width = 147
-      Height = 46
+      Height = 47
       Margins.Left = 5
       Margins.Top = 5
       Margins.Right = 5

@@ -1,15 +1,14 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{2C4C3B61-63B3-40A2-90C2-1EB1C2919B9A}</ProjectGuid>
-        <ProjectVersion>20.1</ProjectVersion>
+        <ProjectGuid>{6331ABA8-5775-4DF2-B3F2-8CC6ECBC8F8A}</ProjectGuid>
+        <ProjectVersion>19.5</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Application</AppType>
-        <MainSource>TradutorSC.dpr</MainSource>
-        <ProjectName Condition="'$(ProjectName)'==''">TradutorSC</ProjectName>
+        <MainSource>AITranslate.dpr</MainSource>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -35,12 +34,6 @@
         <Cfg_1>true</Cfg_1>
         <Base>true</Base>
     </PropertyGroup>
-    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win64)'!=''">
-        <Cfg_1_Win64>true</Cfg_1_Win64>
-        <CfgParent>Cfg_1</CfgParent>
-        <Cfg_1>true</Cfg_1>
-        <Base>true</Base>
-    </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
         <Cfg_2>true</Cfg_2>
         <CfgParent>Base</CfgParent>
@@ -48,12 +41,6 @@
     </PropertyGroup>
     <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
         <Cfg_2_Win32>true</Cfg_2_Win32>
-        <CfgParent>Cfg_2</CfgParent>
-        <Cfg_2>true</Cfg_2>
-        <Base>true</Base>
-    </PropertyGroup>
-    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win64)'!=''">
-        <Cfg_2_Win64>true</Cfg_2_Win64>
         <CfgParent>Cfg_2</CfgParent>
         <Cfg_2>true</Cfg_2>
         <Base>true</Base>
@@ -70,27 +57,19 @@
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
-        <SanitizedProjectName>TradutorSC</SanitizedProjectName>
-        <DCC_Define>SKIA;$(DCC_Define)</DCC_Define>
-        <Custom_Styles>Sky|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Sky.vsf;&quot;Tablet Light|VCLSTYLE|$(BDSCOMMONDIR)\Styles\TabletLight.vsf&quot;;&quot;Windows10 Blue|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Windows10Blue.vsf&quot;;&quot;Windows10 Green|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Windows10Green.vsf&quot;;&quot;Windows10 SlateGray|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Windows10SlateGray.vsf&quot;;Carbon|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Carbon.vsf</Custom_Styles>
+        <SanitizedProjectName>AITranslate</SanitizedProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <DCC_UsePackage>soapserver;IndySystem;FMXComponents;vclwinx;KastriFMX;pkgZMaterial;fmx;Skia.Package.VCL;vclie;DbxCommonDriver;bindengine;vcldb;IndyIPCommon;VCLRESTComponents;FireDACCommonODBC;FireDACCommonDriver;appanalytics;IndyProtocols;vclx;Skia.Package.RTL;IndyIPClient;dbxcds;vcledge;vclFireDAC;bindcompvclwinx;bindcomp;FmxTeeUI;FireDACCommon;KernowSoftwareFMX;IndyCore;RESTBackendComponents;bindcompfmx;bindcompdbx;inetdb;rtl;FireDACMySQLDriver;FireDACSqliteDriver;DbxClientDriver;FireDACADSDriver;Tee;RESTComponents;DBXSqliteDriver;vcl;vclactnband;TeeUI;IndyIPServer;fmxFireDAC;dbexpress;dsnapxml;dsnapcon;soapmidas;adortl;DBXMySQLDriver;VclSmp;inet;FMXAudioHGM;vclimg;vcltouch;FireDACPgDriver;FireDAC;fmxase;inetdbxpress;xmlrtl;tethering;dbrtl;bindcompvcl;dsnap;fmxdae;TeeDB;Skia.Package.FMX;CloudService;FireDACMSAccDriver;CustomIPTransport;LockBox3DR;fmxobj;bindcompvclsmp;FMXTee;YxdUI;soaprtl;vcldsnap;DBXInterBaseDriver;FireDACIBDriver;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>soapserver;IndySystem;FMXComponents;vclwinx;KastriFMX;pkgZMaterial;fmx;Skia.Package.VCL;vclie;DbxCommonDriver;bindengine;vcldb;IndyIPCommon;VCLRESTComponents;FireDACCommonODBC;FireDACCommonDriver;appanalytics;IndyProtocols;vclx;Skia.Package.RTL;IndyIPClient;dbxcds;vcledge;vclFireDAC;bindcompvclwinx;bindcomp;FmxTeeUI;FireDACCommon;KernowSoftwareFMX;IndyCore;RESTBackendComponents;bindcompfmx;bindcompdbx;inetdb;rtl;FireDACMySQLDriver;FireDACSqliteDriver;DbxClientDriver;FireDACADSDriver;Tee;RESTComponents;DBXSqliteDriver;vcl;vclactnband;TeeUI;IndyIPServer;fmxFireDAC;dbexpress;dsnapxml;dsnapcon;soapmidas;adortl;LockBoxDR;DBXMySQLDriver;VclSmp;inet;FMXAudioHGM;vclimg;vcltouch;FireDACPgDriver;FireDAC;fmxase;inetdbxpress;xmlrtl;tethering;dbrtl;bindcompvcl;dsnap;fmxdae;TeeDB;Skia.Package.FMX;CloudService;FireDACMSAccDriver;CustomIPTransport;fmxobj;bindcompvclsmp;FMXTee;YxdUI;soaprtl;vcldsnap;DBXInterBaseDriver;FireDACIBDriver;$(DCC_UsePackage)</DCC_UsePackage>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
-        <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=www.magnumlabs.com.br;LegalTrademarks=;OriginalFilename=;ProgramID=br.com.magnumlabs.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <VerInfo_Locale>1046</VerInfo_Locale>
-        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Base_Win64)'!=''">
-        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <DCC_UsePackage>soapserver;IndySystem;vclwinx;fmx;Skia.Package.VCL;vclie;DbxCommonDriver;bindengine;vcldb;IndyIPCommon;VCLRESTComponents;FireDACCommonODBC;FireDACCommonDriver;appanalytics;IndyProtocols;vclx;Skia.Package.RTL;IndyIPClient;dbxcds;vcledge;vclFireDAC;bindcompvclwinx;bindcomp;FmxTeeUI;FireDACCommon;IndyCore;RESTBackendComponents;bindcompfmx;bindcompdbx;inetdb;rtl;FireDACMySQLDriver;FireDACSqliteDriver;DbxClientDriver;FireDACADSDriver;Tee;RESTComponents;DBXSqliteDriver;vcl;vclactnband;TeeUI;IndyIPServer;fmxFireDAC;dbexpress;dsnapxml;dsnapcon;soapmidas;adortl;LockBoxDR;DBXMySQLDriver;VclSmp;inet;FMXAudioHGM;vclimg;vcltouch;FireDACPgDriver;FireDAC;fmxase;inetdbxpress;xmlrtl;tethering;dbrtl;bindcompvcl;dsnap;fmxdae;TeeDB;Skia.Package.FMX;CloudService;FireDACMSAccDriver;CustomIPTransport;fmxobj;bindcompvclsmp;FMXTee;soaprtl;vcldsnap;DBXInterBaseDriver;FireDACIBDriver;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -107,13 +86,7 @@
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <DCC_ExeOutput>C:\Tradutor SC</DCC_ExeOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Locale>1046</VerInfo_Locale>
-        <Icon_MainIcon>Resources\TradutorSC.ico</Icon_MainIcon>
-        <UWP_DelphiLogo44>D:\Recursos\iconfinder_Asset_93_3298612.png</UWP_DelphiLogo44>
-        <UWP_DelphiLogo150>D:\Recursos\iconfinder_Asset_93_3298612.png</UWP_DelphiLogo150>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+        <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -123,38 +96,13 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Locale>1046</VerInfo_Locale>
-        <Icon_MainIcon>Resources\TradutorSC.ico</Icon_MainIcon>
-        <UWP_DelphiLogo44>D:\Recursos\iconfinder_Asset_93_3298612.png</UWP_DelphiLogo44>
-        <UWP_DelphiLogo150>D:\Recursos\iconfinder_Asset_93_3298612.png</UWP_DelphiLogo150>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.1.1;InternalName=;LegalCopyright=www.magnumlabs.com.br;LegalTrademarks=;OriginalFilename=;ProgramID=br.com.magnumlabs.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <VerInfo_Build>1</VerInfo_Build>
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
-        <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="uTradutor.Main.pas">
-            <Form>frmTradutorSC</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uTradutor.Sobre.pas">
-            <Form>frmSobre</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uTradutor.Comum.pas"/>
-        <DCCReference Include="uTradutor.Novatag.pas">
-            <Form>frmNovaTag</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uTradutor.CompararTags.pas">
-            <Form>frmCompararTags</Form>
+        <DCCReference Include="uAITranslate.pas">
+            <Form>Form3</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Base">
@@ -175,95 +123,99 @@
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">TradutorSC.dpr</Source>
+                    <Source Name="MainSource">AITranslate.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k290.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp290.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\21.0\bpl\LockBox3VCLDD270.bpl">TurboPack LockBox 3 VCL designtime package</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\Embarcadero\Studio\21.0\bin\designide270.bpl">File C:\Program Files (x86)\Embarcadero\Studio\21.0\bin\designide270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\21.0\bpl\LockBox3FMXDD270.bpl">TurboPack LockBox 3 FMX designtime package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k280.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp280.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclxml270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclxml270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\gitide270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\gitide270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\hgide270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\hgide270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\svnide270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\svnide270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclbindcomp270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclbindcomp270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\ExpertsUI270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\ExpertsUI270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclcommon270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclcommon270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclbindcompfmx270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclbindcompfmx270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclrtl270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclrtl270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcltethering270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dcltethering270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclact270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclact270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcldb270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dcldb270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclstd270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclstd270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclemacsedit270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclemacsedit270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclmlwiz270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclmlwiz270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclQuickEdit270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclQuickEdit270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclshare270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclshare270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclwinx270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclwinx270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\samplevisualizers270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\samplevisualizers270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\applet270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\applet270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclappanalytics270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclappanalytics270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclbindcompvcl270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclbindcompvcl270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclmid270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclmid270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclnetwiz270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclnetwiz270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclnet270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclnet270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\ExpertsCreators270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\ExpertsCreators270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclvcldb270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclvcldb270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcl31w270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dcl31w270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclsmp270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclsmp270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclsmpedit270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclsmpedit270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcltouch270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dcltouch270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\MobileWizardExpert270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\MobileWizardExpert270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\DataExplorerService270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\DataExplorerService270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclDBXDrivers270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclDBXDrivers270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclDBXDriversInt270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclDBXDriversInt270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclIPIndyImpl270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclIPIndyImpl270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclRESTBackendComponents270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclRESTBackendComponents270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclRESTComponents270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclRESTComponents270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcldbx270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dcldbx270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcldbxcds270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dcldbxcds270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclCloudService270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclCloudService270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\DataExplorerFireDACPlugin270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\DataExplorerFireDACPlugin270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclFireDAC270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclFireDAC270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclBindCompFireDAC270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclBindCompFireDAC270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclFMXFireDAC270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclFMXFireDAC270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclVclFireDAC270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclVclFireDAC270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclfmxstd270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclfmxstd270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\fmxstyledesigner270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\fmxstyledesigner270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclIndyCore270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclIndyCore270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclIndyProtocols270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclIndyProtocols270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcledge270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dcledge270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclie270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclie270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\DataExplorerDBXPlugin270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\DataExplorerDBXPlugin270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\DataExplorerDBXPluginInt270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\DataExplorerDBXPluginInt270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclbindcompdbx270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclbindcompdbx270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcldsnapxml270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dcldsnapxml270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclmcn270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclmcn270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclsoapmidas270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclsoapmidas270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclsoap270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclsoap270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclsoapserver270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclsoapserver270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclnetdb270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclnetdb270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclado270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclado270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\DUnitXIDEExpert270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\DUnitXIDEExpert270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclFMXtee9270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclFMXtee9270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcltee9270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dcltee9270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\21.0\bpl\LockBox3DD270.bpl">TurboPack LockBox 3 Delphi designtime package</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\21.0\bpl\ATFlatControlsPackage.bpl">(untitled)</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\21.0\Bpl\CEF4Delphi_FMX.bpl">CEF4Delphi</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\21.0\Bpl\KastriFMX270.bpl">(untitled)</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\21.0\Bpl\dclSVGIconImageList270.bpl">Ethea SVGIconImageList VCL components</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\21.0\Bpl\dclSVGIconImageListFMX270.bpl">Ethea SVGIconImageList  FMX components</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\21.0\Bpl\ChatGptWizard.bpl">(untitled)</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\limam\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.FMX270.bpl">File C:\Users\limam\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.FMX270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\limam\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.VCL270.bpl">File C:\Users\limam\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.VCL270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\limam\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.FMX.Designtime270.bpl">File C:\Users\limam\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.FMX.Designtime270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\limam\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.VCL.Designtime270.bpl">File C:\Users\limam\Documents\Skia4Delphi\Library\RAD Studio 10.4 Sydney\Win32\Release\Bpl\Skia.Package.VCL.Designtime270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\21.0\Bpl\AndoridVoiceComponents.bpl">(untitled)</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dcloffice2k270.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp270.bpl">File c:\program files (x86)\embarcadero\studio\22.0\bin\dclofficexp270.bpl not found</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="4">
-                <DeployFile Condition="'$(SKIADIR)'==''" Required="true" LocalName="$(BDS)\bin64\sk4d.dll" Configuration="Debug" Class="Skia">
-                    <Platform Name="Win64">
-                        <RemoteDir>.\</RemoteDir>
-                        <Operation>0</Operation>
-                        <RemoteName>sk4d.dll</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile Condition="'$(SKIADIR)'==''" Required="true" LocalName="$(BDS)\bin64\sk4d.dll" Configuration="Release" Class="Skia">
-                    <Platform Name="Win64">
-                        <RemoteDir>.\</RemoteDir>
-                        <Operation>0</Operation>
-                        <RemoteName>sk4d.dll</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile Condition="'$(SKIADIR)'==''" Required="true" LocalName="$(BDS)\bin\sk4d.dll" Configuration="Debug" Class="Skia">
+                <DeployFile LocalName="Win32\Debug\AITranslate.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Operation>0</Operation>
-                        <RemoteName>sk4d.dll</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile Condition="'$(SKIADIR)'==''" Required="true" LocalName="$(BDS)\bin\sk4d.dll" Configuration="Release" Class="Skia">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Operation>0</Operation>
-                        <RemoteName>sk4d.dll</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile Condition="'$(SKIADIR)'!=''" Required="true" LocalName="$(SKIADIR)\Binary\Shared\Win32\sk4d.dll" Configuration="Debug" Class="Skia">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Operation>0</Operation>
-                        <RemoteName>sk4d.dll</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile Condition="'$(SKIADIR)'!=''" Required="true" LocalName="$(SKIADIR)\Binary\Shared\Win32\sk4d.dll" Configuration="Release" Class="Skia">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Operation>0</Operation>
-                        <RemoteName>sk4d.dll</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile Condition="'$(SKIADIR)'!=''" Required="true" LocalName="$(SKIADIR)\Binary\Shared\Win64\sk4d.dll" Configuration="Debug" Class="Skia">
-                    <Platform Name="Win64">
-                        <RemoteDir>.\</RemoteDir>
-                        <Operation>0</Operation>
-                        <RemoteName>sk4d.dll</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile Condition="'$(SKIADIR)'!=''" Required="true" LocalName="$(SKIADIR)\Binary\Shared\Win64\sk4d.dll" Configuration="Release" Class="Skia">
-                    <Platform Name="Win64">
-                        <RemoteDir>.\</RemoteDir>
-                        <Operation>0</Operation>
-                        <RemoteName>sk4d.dll</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="D:\Recursos\iconfinder_Asset_93_3298612.png" Configuration="Debug" Class="UWP_DelphiLogo44">
-                    <Platform Name="Win32">
-                        <RemoteDir>Assets\</RemoteDir>
-                        <RemoteName>Logo44x44.png</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="D:\Recursos\iconfinder_Asset_93_3298612.png" Configuration="Release" Class="UWP_DelphiLogo44">
-                    <Platform Name="Win32">
-                        <RemoteDir>Assets\</RemoteDir>
-                        <RemoteName>Logo44x44.png</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="D:\Star Citizen - Tradução\bin\TradutorSC.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>TradutorSC.exe</RemoteName>
+                        <RemoteName>AITranslate.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -357,16 +309,6 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="AndroidSplashImageDefV21">
-                    <Platform Name="Android">
-                        <RemoteDir>res\drawable-anydpi-v21</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\drawable-anydpi-v21</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
                 <DeployClass Name="AndroidSplashStyles">
                     <Platform Name="Android">
                         <RemoteDir>res\values</RemoteDir>
@@ -387,66 +329,6 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="AndroidSplashStylesV31">
-                    <Platform Name="Android">
-                        <RemoteDir>res\values-v31</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\values-v31</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
-                <DeployClass Name="Android_AdaptiveIcon">
-                    <Platform Name="Android">
-                        <RemoteDir>res\drawable-anydpi-v26</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\drawable-anydpi-v26</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
-                <DeployClass Name="Android_AdaptiveIconBackground">
-                    <Platform Name="Android">
-                        <RemoteDir>res\drawable</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\drawable</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
-                <DeployClass Name="Android_AdaptiveIconForeground">
-                    <Platform Name="Android">
-                        <RemoteDir>res\drawable</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\drawable</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
-                <DeployClass Name="Android_AdaptiveIconMonochrome">
-                    <Platform Name="Android">
-                        <RemoteDir>res\drawable</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\drawable</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
-                <DeployClass Name="Android_AdaptiveIconV33">
-                    <Platform Name="Android">
-                        <RemoteDir>res\drawable-anydpi-v33</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\drawable-anydpi-v33</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
                 <DeployClass Name="Android_Colors">
                     <Platform Name="Android">
                         <RemoteDir>res\values</RemoteDir>
@@ -454,16 +336,6 @@
                     </Platform>
                     <Platform Name="Android64">
                         <RemoteDir>res\values</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
-                <DeployClass Name="Android_ColorsDark">
-                    <Platform Name="Android">
-                        <RemoteDir>res\values-night-v21</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\values-night-v21</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -634,56 +506,6 @@
                     </Platform>
                     <Platform Name="Android64">
                         <RemoteDir>res\values</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
-                <DeployClass Name="Android_VectorizedNotificationIcon">
-                    <Platform Name="Android">
-                        <RemoteDir>res\drawable-anydpi-v24</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\drawable-anydpi-v24</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
-                <DeployClass Name="Android_VectorizedSplash">
-                    <Platform Name="Android">
-                        <RemoteDir>res\drawable</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\drawable</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
-                <DeployClass Name="Android_VectorizedSplashDark">
-                    <Platform Name="Android">
-                        <RemoteDir>res\drawable-night-anydpi-v21</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\drawable-night-anydpi-v21</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
-                <DeployClass Name="Android_VectorizedSplashV31">
-                    <Platform Name="Android">
-                        <RemoteDir>res\drawable-anydpi-v31</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\drawable-anydpi-v31</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
-                <DeployClass Name="Android_VectorizedSplashV31Dark">
-                    <Platform Name="Android">
-                        <RemoteDir>res\drawable-night-anydpi-v31</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Android64">
-                        <RemoteDir>res\drawable-night-anydpi-v31</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -925,9 +747,6 @@
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="Win64">
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="Win64x">
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -1222,7 +1041,6 @@
                 <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="Win64x" Name="$(PROJECTNAME)"/>
             </Deployment>
             <Platforms>
                 <Platform value="Win32">True</Platform>

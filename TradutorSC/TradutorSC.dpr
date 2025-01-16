@@ -15,7 +15,6 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Stellar Dark');
   Application.CreateForm(TfrmTradutorSC, frmTradutorSC);
   Application.CreateForm(TfrmSobre, frmSobre);
   Application.CreateForm(TfrmNovaTag, frmNovaTag);

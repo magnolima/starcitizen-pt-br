@@ -3,8 +3,8 @@ unit uTradutor.Comum;
 interface
 
 const
-   ITENS_CONFIG = 5;
-   DEFAULT_LOCALE = 'ptbr';
+   ITENS_CONFIG = 6;
+   TRANSLATED_LOCALE = 'ptbr';
    ORIGINAL_LOCALE = 'enus';
    BOM_CHARACTER = #$FEFF;
    GLOBAL_INI = 'global.ini';
@@ -14,20 +14,30 @@ const
    LOCALIZATION_PTBR = 'portuguese_(brazil)';
    LOCALIZATION_EN = 'english';
    LOCALIZATION_ES = 'spanish_(spain)';
+   TAG_SAME = 0;
+   TAG_NEW = 1;
+   TAG_CHANGED = 2;
+   TAG_NOTFOUND = 3;
 
-   DEFAULT_LOCALIZATION_FOLDER = 'C:\Program Files\Roberts Space Industries\StarCitizen\LIVE\data\Localization\';
-   PROMPT_TRANSLATE =
-     'Traduza para Português Brasileiro o texto abaixo, ignore termos universais comuns do inglês como termos ' +
-     'técnicos. O contexto da palavra inglesa "ship" normalmente se refere a nave espacial e não navio:\n{original}';
+	TRANSLATED_LOCALIZATION_FOLDER = 'C:\Program Files\Roberts Space Industries\StarCitizen\LIVE\data\Localization\';
+
+	PROMPT_TRANSLATE = 'Translate the lines below into Brazilian Portuguese, strictly follow these rules:' + #13 +
+							 '- the context is about spaceship and not sea boats, so for most case we should read "nave" or "espaçonave" instead of navio.'#13+
+							 '- keep the same text formatting'#13 +
+							 '- do not translate proper noun or common, universal, technical terms'#13+
+							 '- do not translate patterns enclosed like ~{text}(text), remember that.'#13+
+							 '- simply translate the given text and do not add notes or explanations, remember that.'#13+
+							 'Translate the text below:' +#13+'{original}';
+
    PROMPT_ENHANCE =
      'O texto a seguir, foi traduzido do inglês: {traducao}\n\nO original é:\n{original}\nMelhore esta tradução, ' +
      'considere o que contexto em inglês da palavra "ship" refere-se a nave espacial e não navio.';
    SELECT_PTBR =
      'select Id, datetime(changed) as changed, cast(tag as varchar) as Tag, cast(value as varchar) as Valor, ' +
-     'cast(Comment as varchar) as Comment, New from Global_ptbr %where% order by tag;';
-   SELECT_ENUS =
-     'select Id, datetime(changed) as changed, cast(tag as varchar) as Tag, cast(value as varchar) as Valor, ' +
-     'cast(Comment as varchar) as Comment, New from Global_enus %where% order by tag;';
+	  'cast(Comment as varchar) as Comment, New from Global_ptbr %where% %order%;';
+	SELECT_ENUS =
+	  'select Id, datetime(changed) as changed, cast(tag as varchar) as Tag, cast(value as varchar) as Valor, ' +
+	  'cast(Comment as varchar) as Comment, New from Global_enus %where% %order%;';
    OpenAI_PATH = 'https://api.openai.com/v1';
    CREATE_TABLE = 'CREATE TABLE IF NOT EXISTS global_{locale} (Id INTEGER PRIMARY KEY AUTOINCREMENT,' +
      'Tag TEXT UNIQUE,Value TEXT,Comment TEXT, New Integer, Changed REAL);';
@@ -40,7 +50,8 @@ type
       OpenaiKey: string;
       PromptTranslate: string;
       PromptEnhance: string;
-      LocalizationFolder: string;
+		LocalizationFolder: string;
+      LastUsedFolder: string;
    end;
 
 function GetWindowsProgramVersion: String;

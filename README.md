@@ -1,7 +1,7 @@
 # starcitizen-pt-br (global.ini)
-Tradução para o português brasileiro do jogo *Star Citizen*.
+Tradução para o português brasileiro do jogo *Star Citizen* para SC Alpha 4.x.
 
-Esta tradução não iniciou-se do zero. Estamos apenas complementando e adequando. 
+Esta tradução não se iniciou do zero, estamos apenas complementando e adequando.
 
 Envie sua contribuição na opção acima "Issues" para termos uma boa curadoria neste projeto, caso assim deseje.
 
@@ -17,7 +17,7 @@ Instruções
 
 Ferramenta TradutorSC
 --------
-Publicamos o primeiro Release (1.0.2) da ferramenta de tradução, ironicamente está toda em Português... Caso deseje compilar/alterar os fontes estão disponíveis para Delphi na pasta \TradutorSC
+Publicamos o primeiro Release da ferramenta de tradução, ironicamente está toda em Português... Caso deseje compilar/alterar os fontes estão disponíveis para Delphi na pasta \TradutorSC
 
 For developers there few dependences:
 
