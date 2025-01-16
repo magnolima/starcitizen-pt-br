@@ -4,7 +4,7 @@
         <ProjectVersion>20.1</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -128,9 +128,9 @@
         <Icon_MainIcon>Resources\TradutorSC.ico</Icon_MainIcon>
         <UWP_DelphiLogo44>D:\Recursos\iconfinder_Asset_93_3298612.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>D:\Recursos\iconfinder_Asset_93_3298612.png</UWP_DelphiLogo150>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.1.1;InternalName=;LegalCopyright=www.magnumlabs.com.br;LegalTrademarks=;OriginalFilename=;ProgramID=br.com.magnumlabs.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <VerInfo_Build>1</VerInfo_Build>
-        <VerInfo_Release>1</VerInfo_Release>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.5.1601;InternalName=;LegalCopyright=www.magnumlabs.com.br;LegalTrademarks=;OriginalFilename=;ProgramID=br.com.magnumlabs.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Build>1601</VerInfo_Build>
+        <VerInfo_Release>5</VerInfo_Release>
         <VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">

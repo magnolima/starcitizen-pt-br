@@ -8,7 +8,7 @@ uses
    Vcl.Imaging.pngimage;
 
 const
-   AUTHOR = '2024 por Magno Lima';
+	AUTHOR = '2025 por Magno Lima';
 
 type
    TfrmSobre = class(TForm)

@@ -172,8 +172,8 @@ object frmTradutorSC: TfrmTradutorSC
           Margins.Right = 5
           Margins.Bottom = 5
           Align = alClient
-          Color = clBtnFace
           DataSource = DataSource1
+          FixedColor = clWindow
           Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
           TabOrder = 0
           TitleFont.Charset = DEFAULT_CHARSET

@@ -1416,7 +1416,7 @@ object frmSobre: TfrmSobre
       TextSettings.HorzAlign = Center
       Words = <
         item
-          Caption = '2025 por Magno Lima - 1.0.0.250106'
+          Caption = '2025 por Magno Lima'
         end>
       ExplicitTop = 62
     end
