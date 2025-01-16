@@ -1,4 +1,5 @@
 # starcitizen-pt-br (global.ini)
+
 Tradução para o português brasileiro do jogo *Star Citizen* para SC Alpha 4.x.
 
 Esta tradução não se iniciou do zero, estamos apenas complementando e adequando.
@@ -15,8 +16,10 @@ Instruções
 5) Neste arquivo adicione a linha: g_language = portuguese_(brazil)
 6) Salve e inicie o jogo
 
-Ferramenta TradutorSC
---------
+# Ferramenta TradutorSC
+
+![Screenshot](https://github.com/magnolima/starcitizen-pt-br/blob/main/TradutorSC/Resources/image.png)
+
 Publicamos o primeiro Release da ferramenta de tradução, ironicamente está toda em Português... Caso deseje compilar/alterar os fontes estão disponíveis para Delphi na pasta \TradutorSC
 
 For developers there few dependences:
@@ -26,9 +29,3 @@ For developers there few dependences:
   - MLOpenAI: https://github.com/magnolima/OpenAI-Delphi (let me know if you find issues here, regarding the compatibility)
 
 You should also install or remove (if you would like to) the theme styles.
-
-Preview:
-
-[<img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/YOUTUBE--SOCIAL-PLAY.png" width="50%">](https://youtu.be/wFVXMS7CXKU "Tradutor SC")
-
-
