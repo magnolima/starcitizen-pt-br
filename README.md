@@ -20,12 +20,12 @@ Instruções
 
 ![Screenshot](https://github.com/magnolima/starcitizen-pt-br/blob/main/TradutorSC/Resources/image.png)
 
-Publicamos o primeiro Release da ferramenta de tradução, ironicamente está toda em Português... Caso deseje compilar/alterar os fontes estão disponíveis para Delphi na pasta \TradutorSC
+This tool allows you import the Global.ini file from the game files translation and adapt to your own language. New additions include the use of AI (both local using Ollama, or the OpenAI) with the intention of speeding up the translation work.
 
 For developers there few dependences:
 
   - Skia4Delphi: https://github.com/skia4delphi/skia4delphi
-  - VCL LockBox for using BlowFish cryptography algorithm: Install using Getit
-  - MLOpenAI: https://github.com/magnolima/OpenAI-Delphi (let me know if you find issues here, regarding the compatibility)
+  - ~~VCL LockBox for using BlowFish cryptography algorithm: Install using Getit (no longer necessary as we are using system variables to handle the OpenAI api key)~~
+  - MLOpenAI: https://github.com/magnolima/OpenAI-Delphi (this is repo is outdate, drop me a message so I could help with)
 
 You should also install or remove (if you would like to) the theme styles.
