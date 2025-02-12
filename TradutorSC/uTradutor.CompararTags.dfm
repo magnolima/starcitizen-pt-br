@@ -2,9 +2,9 @@ object frmCompararTags: TfrmCompararTags
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Comparar tags'
+  Caption = 'Compare tags'
   ClientHeight = 619
-  ClientWidth = 981
+  ClientWidth = 973
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,24 +18,24 @@ object frmCompararTags: TfrmCompararTags
   object Label1: TLabel
     Left = 24
     Top = 299
-    Width = 268
+    Width = 303
     Height = 25
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
     Margins.Bottom = 5
-    Caption = 'Tags existentes apenas no original'
+    Caption = 'Check existing tags only in the original'
   end
   object Label2: TLabel
     Left = 24
     Top = 23
-    Width = 277
+    Width = 297
     Height = 25
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
     Margins.Bottom = 5
-    Caption = 'Tags existentes apenas na tradu'#231#227'o'
+    Caption = 'Check existing tags only in translation'
   end
   object lbTagOriginal: TListBox
     Tag = 1
@@ -60,7 +60,7 @@ object frmCompararTags: TfrmCompararTags
     Margins.Top = 5
     Margins.Right = 5
     Margins.Bottom = 5
-    Caption = 'Comparar'
+    Caption = 'Compare'
     TabOrder = 1
     OnClick = btCompararClick
   end
@@ -73,7 +73,7 @@ object frmCompararTags: TfrmCompararTags
     Margins.Top = 5
     Margins.Right = 5
     Margins.Bottom = 5
-    Caption = 'Fechar'
+    Caption = 'Close'
     TabOrder = 2
     OnClick = btFecharClick
   end
@@ -99,13 +99,13 @@ object frmCompararTags: TfrmCompararTags
     Margins.Top = 5
     Margins.Right = 5
     Margins.Bottom = 5
-    Caption = 'Salvar'
+    Caption = 'Save'
     TabOrder = 4
     Visible = False
     OnClick = btSalvarClick
   end
   object btRemoverTags: TButton
-    Left = 311
+    Left = 707
     Top = 10
     Width = 242
     Height = 38
@@ -113,13 +113,13 @@ object frmCompararTags: TfrmCompararTags
     Margins.Top = 5
     Margins.Right = 5
     Margins.Bottom = 5
-    Caption = 'Remover tags obsoletas'
+    Caption = 'Remove obsolete tags'
     Enabled = False
     TabOrder = 5
     OnClick = btRemoverTagsClick
   end
   object btCopiarTags: TButton
-    Left = 311
+    Left = 707
     Top = 286
     Width = 242
     Height = 38
@@ -127,7 +127,7 @@ object frmCompararTags: TfrmCompararTags
     Margins.Top = 5
     Margins.Right = 5
     Margins.Bottom = 5
-    Caption = 'Copiar tags para tradu'#231#227'o'
+    Caption = 'Copy tags to translation'
     Enabled = False
     TabOrder = 6
     OnClick = btCopiarTagsClick
@@ -141,12 +141,11 @@ object frmCompararTags: TfrmCompararTags
     Margins.Top = 5
     Margins.Right = 5
     Margins.Bottom = 5
-    Caption = 'Atualizar tags vazias'
+    Caption = 'Update empty tags'
     TabOrder = 7
     OnClick = btAtualizarTagsVaziasClick
   end
   object PopupMenu1: TPopupMenu
-    OnPopup = PopupMenu1Popup
     Left = 180
     Top = 176
     object Copiar1: TMenuItem

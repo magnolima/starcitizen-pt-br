@@ -2,7 +2,7 @@ object frmNovaTag: TfrmNovaTag
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Nova tag'
+  Caption = 'New Tag'
   ClientHeight = 362
   ClientWidth = 744
   Color = clBtnFace
@@ -28,13 +28,13 @@ object frmNovaTag: TfrmNovaTag
   object Label2: TLabel
     Left = 24
     Top = 93
-    Width = 71
+    Width = 30
     Height = 25
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
     Margins.Bottom = 5
-    Caption = 'Tradu'#231#227'o'
+    Caption = 'Text'
   end
   object btnCancel: TButton
     Left = 608
@@ -46,7 +46,7 @@ object frmNovaTag: TfrmNovaTag
     Margins.Right = 5
     Margins.Bottom = 5
     Cancel = True
-    Caption = 'Cancelar'
+    Caption = 'Cancel'
     TabOrder = 3
     OnClick = btnCancelClick
   end
@@ -59,7 +59,7 @@ object frmNovaTag: TfrmNovaTag
     Margins.Top = 5
     Margins.Right = 5
     Margins.Bottom = 5
-    Caption = 'OK'
+    Caption = 'Insert'
     ModalResult = 1
     TabOrder = 2
   end

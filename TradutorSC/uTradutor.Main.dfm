@@ -6,8 +6,8 @@ object frmTradutorSC: TfrmTradutorSC
   Margins.Right = 5
   Margins.Bottom = 5
   Caption = 'Tradutor Star Citizen'
-  ClientHeight = 1064
-  ClientWidth = 1618
+  ClientHeight = 1045
+  ClientWidth = 1610
   Color = clBtnFace
   Constraints.MinHeight = 851
   Constraints.MinWidth = 1500
@@ -17,6 +17,7 @@ object frmTradutorSC: TfrmTradutorSC
   Font.Name = 'Segoe UI'
   Font.Style = []
   Menu = MainMenu1
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 144
@@ -24,7 +25,7 @@ object frmTradutorSC: TfrmTradutorSC
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 1618
+    Width = 1610
     Height = 89
     Margins.Left = 5
     Margins.Top = 5
@@ -66,14 +67,14 @@ object frmTradutorSC: TfrmTradutorSC
       Margins.Top = 5
       Margins.Right = 5
       Margins.Bottom = 5
-      Caption = 'Filtrar'
+      Caption = 'Filter'
       ImageIndex = 0
       TabOrder = 1
       OnClick = btnFiltrarClick
     end
     object DBNavigator1: TDBNavigator
       AlignWithMargins = True
-      Left = 1162
+      Left = 1154
       Top = 9
       Width = 447
       Height = 71
@@ -96,7 +97,7 @@ object frmTradutorSC: TfrmTradutorSC
       Margins.Top = 5
       Margins.Right = 5
       Margins.Bottom = 5
-      Caption = 'Procurar em Tag'
+      Caption = 'Search in Tag'
       TabOrder = 3
     end
     object cbSincronizar: TCheckBox
@@ -108,17 +109,29 @@ object frmTradutorSC: TfrmTradutorSC
       Margins.Top = 5
       Margins.Right = 5
       Margins.Bottom = 5
-      Caption = 'Sincronizar tradu'#231#245'es'
+      Caption = 'Synchronize translations'
       Checked = True
       State = cbChecked
       TabOrder = 4
+    end
+    object cbExata: TCheckBox
+      Left = 468
+      Top = 58
+      Width = 170
+      Height = 25
+      Margins.Left = 5
+      Margins.Top = 5
+      Margins.Right = 5
+      Margins.Bottom = 5
+      Caption = 'Exact search'
+      TabOrder = 5
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 89
-    Width = 1618
-    Height = 913
+    Width = 1610
+    Height = 894
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
@@ -127,8 +140,8 @@ object frmTradutorSC: TfrmTradutorSC
     TabOrder = 1
     object Splitter1: TSplitter
       Left = 1
-      Top = 440
-      Width = 1616
+      Top = 389
+      Width = 1608
       Height = 4
       Cursor = crVSplit
       Margins.Left = 5
@@ -143,30 +156,30 @@ object frmTradutorSC: TfrmTradutorSC
       ExplicitTop = 524
       ExplicitWidth = 1527
     end
-    object PageControl1: TPageControl
+    object pcTextStrings: TPageControl
       Left = 1
       Top = 49
-      Width = 1616
-      Height = 391
+      Width = 1608
+      Height = 340
       Margins.Left = 5
       Margins.Top = 5
       Margins.Right = 5
       Margins.Bottom = 5
-      ActivePage = TabSheet1
+      ActivePage = tsTranslation
       Align = alClient
       TabOrder = 0
-      OnChange = PageControl1Change
-      object TabSheet1: TTabSheet
+      OnChange = pcTextStringsChange
+      object tsTranslation: TTabSheet
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
         Margins.Bottom = 5
-        Caption = 'Portugu'#234's Pt-Br'
+        Caption = 'Translated version'
         object dgTraducao: TDBGrid
           Left = 0
           Top = 0
-          Width = 1608
-          Height = 351
+          Width = 1600
+          Height = 300
           Margins.Left = 5
           Margins.Top = 5
           Margins.Right = 5
@@ -211,18 +224,18 @@ object frmTradutorSC: TfrmTradutorSC
             end>
         end
       end
-      object TabSheet2: TTabSheet
+      object tsOriginal: TTabSheet
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
         Margins.Bottom = 5
-        Caption = 'Ingl'#234's Original - En-US (base)'
+        Caption = 'Original English - En-US (base)'
         ImageIndex = 1
         object dgOriginal: TDBGrid
           Left = 0
           Top = 0
-          Width = 1608
-          Height = 351
+          Width = 1600
+          Height = 300
           Margins.Left = 5
           Margins.Top = 5
           Margins.Right = 5
@@ -245,7 +258,7 @@ object frmTradutorSC: TfrmTradutorSC
             item
               Expanded = False
               FieldName = 'changed'
-              Title.Caption = 'Altera'#231#227'o'
+              Title.Caption = 'Changed'
               Width = 200
               Visible = True
             end
@@ -259,6 +272,7 @@ object frmTradutorSC: TfrmTradutorSC
               Expanded = False
               FieldName = 'Valor'
               ReadOnly = False
+              Title.Caption = 'Value'
               Width = 1001
               Visible = True
             end>
@@ -267,9 +281,9 @@ object frmTradutorSC: TfrmTradutorSC
     end
     object Panel4: TPanel
       Left = 1
-      Top = 444
-      Width = 1616
-      Height = 468
+      Top = 393
+      Width = 1608
+      Height = 500
       Margins.Left = 5
       Margins.Top = 5
       Margins.Right = 5
@@ -277,18 +291,18 @@ object frmTradutorSC: TfrmTradutorSC
       Align = alBottom
       TabOrder = 1
       DesignSize = (
-        1616
-        468)
+        1608
+        500)
       object Label2: TLabel
         Left = 20
         Top = 11
-        Width = 79
+        Width = 95
         Height = 25
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
         Margins.Bottom = 5
-        Caption = 'Tradu'#231#227'o'
+        Caption = 'Translation'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -18
@@ -305,22 +319,22 @@ object frmTradutorSC: TfrmTradutorSC
         Margins.Top = 5
         Margins.Right = 5
         Margins.Bottom = 5
-        Caption = 'Tradu'#231#227'o com IA'
+        Caption = 'IA Translation'
         ImageIndex = 0
         Images = ImageList1
         OnClick = sbTraduzirClick
       end
       object Label3: TLabel
-        Left = 1102
+        Left = 1094
         Top = 220
-        Width = 369
+        Width = 342
         Height = 23
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
         Margins.Bottom = 5
         Anchors = [akTop, akRight]
-        Caption = '(Control+Enter = Atualizar / Enter = Nova linha)'
+        Caption = '(Control+Enter = Refresh / Enter = New line)'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = 23
@@ -345,10 +359,21 @@ object frmTradutorSC: TfrmTradutorSC
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object Label5: TLabel
+        Left = 17
+        Top = 277
+        Width = 128
+        Height = 25
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Caption = 'Do not translate'
+      end
       object mmTraducao: TMemo
         Left = 20
         Top = 40
-        Width = 1451
+        Width = 1443
         Height = 170
         Margins.Left = 5
         Margins.Top = 5
@@ -361,7 +386,7 @@ object frmTradutorSC: TfrmTradutorSC
         OnKeyDown = mmTraducaoKeyDown
       end
       object btAtualizar: TButton
-        Left = 1481
+        Left = 1473
         Top = 44
         Width = 126
         Height = 37
@@ -370,14 +395,14 @@ object frmTradutorSC: TfrmTradutorSC
         Margins.Right = 5
         Margins.Bottom = 5
         Anchors = [akTop, akRight]
-        Caption = 'Atualizar'
+        Caption = 'Update'
         DropDownMenu = PopupMenu1
         Style = bsSplitButton
         TabOrder = 1
         OnClick = btAtualizarClick
       end
       object btnCancelar: TButton
-        Left = 1481
+        Left = 1473
         Top = 104
         Width = 126
         Height = 36
@@ -386,14 +411,14 @@ object frmTradutorSC: TfrmTradutorSC
         Margins.Right = 5
         Margins.Bottom = 5
         Anchors = [akTop, akRight]
-        Caption = 'Cancelar'
+        Caption = 'Cancel'
         TabOrder = 2
         OnClick = btnCancelarClick
       end
       object mmOriginal: TMemo
         Left = 20
-        Top = 272
-        Width = 1451
+        Top = 322
+        Width = 1443
         Height = 170
         Margins.Left = 5
         Margins.Top = 5
@@ -405,7 +430,7 @@ object frmTradutorSC: TfrmTradutorSC
         TabOrder = 3
       end
       object btnUsarOriginal: TButton
-        Left = 1481
+        Left = 1473
         Top = 275
         Width = 126
         Height = 37
@@ -414,7 +439,7 @@ object frmTradutorSC: TfrmTradutorSC
         Margins.Right = 5
         Margins.Bottom = 5
         Anchors = [akTop, akRight]
-        Caption = 'Usar original'
+        Caption = 'Use original'
         TabOrder = 4
         OnClick = btnUsarOriginalClick
       end
@@ -427,14 +452,27 @@ object frmTradutorSC: TfrmTradutorSC
         Margins.Top = 5
         Margins.Right = 5
         Margins.Bottom = 5
-        Caption = 'Melhorar esta tradu'#231#227'o'
+        Caption = 'Improve this translation'
         TabOrder = 5
+      end
+      object edDontranslate: TEdit
+        Left = 166
+        Top = 272
+        Width = 1297
+        Height = 33
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 6
+        OnExit = edDontranslateExit
       end
     end
     object Panel5: TPanel
       Left = 1
       Top = 1
-      Width = 1616
+      Width = 1608
       Height = 48
       Margins.Left = 5
       Margins.Top = 5
@@ -443,10 +481,10 @@ object frmTradutorSC: TfrmTradutorSC
       Align = alTop
       TabOrder = 2
       DesignSize = (
-        1616
+        1608
         48)
       object cbMostrarNovasTags: TCheckBox
-        Left = 1166
+        Left = 1158
         Top = 9
         Width = 208
         Height = 26
@@ -455,12 +493,12 @@ object frmTradutorSC: TfrmTradutorSC
         Margins.Right = 5
         Margins.Bottom = 5
         Anchors = [akTop, akRight]
-        Caption = 'Mostrar novas tags'
+        Caption = 'Show new tags'
         TabOrder = 0
         OnClick = cbMostrarNovasTagsClick
       end
       object cbMostrarVazios: TCheckBox
-        Left = 1388
+        Left = 1380
         Top = 9
         Width = 217
         Height = 26
@@ -469,16 +507,31 @@ object frmTradutorSC: TfrmTradutorSC
         Margins.Right = 5
         Margins.Bottom = 5
         Anchors = [akTop, akRight]
-        Caption = 'Mostrar valores vazios'
+        Caption = 'Show empty values'
         TabOrder = 1
         OnClick = cbMostrarVaziosClick
+      end
+      object cbNotTranslated: TCheckBox
+        Left = 904
+        Top = 9
+        Width = 244
+        Height = 26
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Anchors = [akTop, akRight]
+        Caption = 'Show untranslated'
+        Enabled = False
+        TabOrder = 2
+        OnClick = cbNotTranslatedClick
       end
     end
   end
   object Panel3: TPanel
     Left = 0
-    Top = 1002
-    Width = 1618
+    Top = 983
+    Width = 1610
     Height = 62
     Margins.Left = 5
     Margins.Top = 5
@@ -489,7 +542,7 @@ object frmTradutorSC: TfrmTradutorSC
     ParentBackground = False
     TabOrder = 2
     DesignSize = (
-      1618
+      1610
       62)
     object Label1: TLabel
       Left = 12
@@ -503,7 +556,7 @@ object frmTradutorSC: TfrmTradutorSC
       Caption = '---'
     end
     object btnInterromper: TButton
-      Left = 1398
+      Left = 1390
       Top = 10
       Width = 113
       Height = 38
@@ -512,13 +565,13 @@ object frmTradutorSC: TfrmTradutorSC
       Margins.Right = 5
       Margins.Bottom = 5
       Anchors = [akTop, akRight]
-      Caption = 'Interromper'
+      Caption = 'Stop'
       TabOrder = 0
       Visible = False
       OnClick = btnInterromperClick
     end
     object SkAnimatedImage1: TSkAnimatedImage
-      Left = 1521
+      Left = 1513
       Top = -19
       Width = 90
       Height = 90
@@ -1025,8 +1078,8 @@ object frmTradutorSC: TfrmTradutorSC
       'DriverID=SQLite')
     LoginPrompt = False
     BeforeConnect = ConnectionBeforeConnect
-    Left = 114
-    Top = 687
+    Left = 102
+    Top = 603
   end
   object FDPhysSQLiteDriverLink1: TFDPhysSQLiteDriverLink
     DriverID = 'SQLite'
@@ -1091,28 +1144,28 @@ object frmTradutorSC: TfrmTradutorSC
     Left = 45
     Top = 315
     object Arquivo1: TMenuItem
-      Caption = 'Arquivo'
+      Caption = 'File'
       object ImportarGlobalini1: TMenuItem
-        Caption = 'Importar Global.ini para base PT-BR'
+        Caption = 'Import Global.ini to Translated database'
         object Importarapenasnovastags1: TMenuItem
-          Caption = 'Importar apenas novas tags'
+          Caption = 'Import only new tags'
           OnClick = Importarapenasnovastags1Click
         end
         object Importartudo1: TMenuItem
-          Caption = 'Importar tudo'
+          Caption = 'Import all'
           OnClick = Importartudo1Click
         end
       end
       object ImportarGlobaliniparabaseIngls1: TMenuItem
-        Caption = 'Importar Global.ini para base EN-US'
+        Caption = 'Import Global.ini to EN-US base'
         object Importarapenasnovastags2: TMenuItem
           Tag = 1
-          Caption = 'Importar apenas novas tags'
+          Caption = 'Import only new tags'
           OnClick = Importarapenasnovastags1Click
         end
         object Importartudo2: TMenuItem
           Tag = 1
-          Caption = 'Importar tudo'
+          Caption = 'Import all'
           OnClick = Importartudo1Click
         end
       end
@@ -1120,62 +1173,71 @@ object frmTradutorSC: TfrmTradutorSC
         Caption = '-'
       end
       object ExportarGlobalini1: TMenuItem
-        Caption = 'Exportar Global.ini Traduzido'
+        Caption = 'Export Translated Global.ini'
         OnClick = ExportarGlobalini1Click
       end
       object ExportarGlobaliniOriginal1: TMenuItem
-        Caption = 'Exportar Global.ini Original'
+        Caption = 'Export Original Global.ini'
         OnClick = ExportarGlobaliniOriginal1Click
       end
       object ImplantarTraduo1: TMenuItem
-        Caption = 'Implantar Tradu'#231#227'o'
+        Caption = 'Deploy translation'
         object PastaversoLive1: TMenuItem
-          Caption = 'Pasta vers'#227'o Live'
+          Caption = 'Live version folder'
           OnClick = PastaversoLive1Click
         end
         object Escolherlugar1: TMenuItem
-          Caption = 'Escolher lugar'
+          Caption = 'Choose folder'
           OnClick = Escolherlugar1Click
         end
       end
       object N5: TMenuItem
         Caption = '-'
       end
-      object ObtenhasuachaveDeepLTranslate1: TMenuItem
-        Caption = 'Inserir chave ChatGPT/OpenAI'
-        OnClick = ObtenhasuachaveDeepLTranslate1Click
+      object raduoIA1: TMenuItem
+        Caption = 'AI Translation'
+        object UtilizarOllamaAI: TMenuItem
+          AutoCheck = True
+          Caption = 'Use Ollama'
+          RadioItem = True
+          OnClick = UtilizarOllamaAIClick
+        end
+        object ObtenhasuachaveDeepLTranslate1: TMenuItem
+          Caption = 'Insert ChatGPT/OpenAI key'
+          OnClick = ObtenhasuachaveDeepLTranslate1Click
+        end
       end
       object N1: TMenuItem
         Caption = '-'
       end
       object Sair1: TMenuItem
-        Caption = 'Sair'
+        Caption = 'Exit'
         OnClick = Sair1Click
       end
     end
     object Editar1: TMenuItem
-      Caption = 'Editar'
+      Caption = 'Edit'
       object CompararTags1: TMenuItem
-        Caption = 'Comparar Tags do banco de dados'
+        Caption = 'Compare Database Tags'
         OnClick = CompararTags1Click
       end
       object N2: TMenuItem
         Caption = '-'
       end
       object EditarpromptChatGPT1: TMenuItem
-        Caption = 'Editar prompt ChatGPT'
+        Caption = 'Edit ChatGPT prompt'
         OnClick = EditarpromptChatGPT1Click
       end
       object LocalizaoStarCitizen1: TMenuItem
-        Caption = 'Localiza'#231#227'o da instala'#231#227'o Star Citizen'
+        Caption = 'Star Citizen Installation Location'
         OnClick = LocalizaoStarCitizen1Click
       end
     end
     object MenuTema1: TMenuItem
-      Caption = 'Tema'
+      Caption = 'Theme'
     end
     object Sobre1: TMenuItem
-      Caption = 'Sobre'
+      Caption = 'About'
       OnClick = Sobre1Click
     end
   end
@@ -1601,8 +1663,8 @@ object frmTradutorSC: TfrmTradutorSC
   object DataSource1: TDataSource
     DataSet = qryTraducao
     OnDataChange = DataSource1DataChange
-    Left = 339
-    Top = 678
+    Left = 219
+    Top = 594
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'ini'

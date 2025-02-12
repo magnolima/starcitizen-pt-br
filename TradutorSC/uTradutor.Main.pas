@@ -33,11 +33,8 @@ uses
 	Vcl.Buttons, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Menus,
 	Vcl.Themes, Vcl.Styles,
 	Vcl.DBCtrls, System.IOUtils, System.Skia, Vcl.Skia, Vcl.ComCtrls,
-	MLOpenAI.Core, MLOpenAI.ChatGPT,
-	MLOpenAI.Types, MLOpenAI.Completions, LbCipher, LbClass, uTradutor.Comum;
-
-const
-	clVerde = $0080FF80;
+	MLOpenAI.Core, MLOpenAI.ChatGPT, MLOpenAI.Types, MLOpenAI.Completions,
+	LbCipher, LbClass, uTradutor.Comum;
 
 type
 	TEdit = class(Vcl.StdCtrls.TEdit)
@@ -78,9 +75,9 @@ type
 		qryTraducaoValor: TWideStringField;
 		qryTraducaochanged: TWideStringField;
 		ImportarGlobaliniparabaseIngls1: TMenuItem;
-		PageControl1: TPageControl;
-		TabSheet1: TTabSheet;
-		TabSheet2: TTabSheet;
+		pcTextStrings: TPageControl;
+		tsTranslation: TTabSheet;
+		tsOriginal: TTabSheet;
 		dgOriginal: TDBGrid;
 		DataSource2: TDataSource;
 		qryOriginal: TFDQuery;
@@ -129,13 +126,19 @@ type
 		cbMostrarVazios: TCheckBox;
 		PastaversoLive1: TMenuItem;
 		Escolherlugar1: TMenuItem;
+		UtilizarOllamaAI: TMenuItem;
+		raduoIA1: TMenuItem;
+		cbExata: TCheckBox;
+		edDontranslate: TEdit;
+		Label5: TLabel;
+		cbNotTranslated: TCheckBox;
 		procedure btnInterromperClick(Sender: TObject);
 		procedure FormShow(Sender: TObject);
 		procedure FormCreate(Sender: TObject);
 		procedure sbTraduzirClick(Sender: TObject);
 		procedure Splitter1Moved(Sender: TObject);
 		procedure Splitter1CanResize(Sender: TObject; var NewSize: Integer; var Accept: Boolean);
-		procedure PageControl1Change(Sender: TObject);
+		procedure pcTextStringsChange(Sender: TObject);
 		procedure Sobre1Click(Sender: TObject);
 		procedure btnFiltrarClick(Sender: TObject);
 		procedure Edit1Change(Sender: TObject);
@@ -166,6 +169,10 @@ type
 		procedure Escolherlugar1Click(Sender: TObject);
 		procedure DataSource1DataChange(Sender: TObject; Field: TField);
 		procedure mmTraducaoEnter(Sender: TObject);
+		procedure UtilizarOllamaAIClick(Sender: TObject);
+		procedure FormClose(Sender: TObject; var Action: TCloseAction);
+		procedure edDontranslateExit(Sender: TObject);
+		procedure cbNotTranslatedClick(Sender: TObject);
 	private
 		FEngine: TOAIEngine;
 		FChatGPT: TOpenAI;
@@ -184,7 +191,7 @@ type
 		procedure AdicionarTemas(const ATemaDefault: string);
 		procedure SelecionarTema(Sender: TObject);
 		procedure Aplicartema(const ATema: string);
-		procedure ConfigurarOpenAI;
+		procedure ConfigurarAI;
 		procedure ExportarGlobal(const Filename, ALocale: string);
 		procedure AtualizarDatabase(const id: Integer; const ATag, AValor, AOldValor: string);
 		procedure ErroImportacao(const ErrorMessage: string);
@@ -196,7 +203,8 @@ type
 		function NewTag(var AQuery: TFDQuery; ATag, ALocale: string; const aCheckForChanged: Boolean = true): Integer;
 		procedure SelecionarDiretorioSC;
 		procedure Exportar(const ALocale: string);
-    procedure EnableTextGrid;
+		procedure EnableTextGrid;
+		function ConfirmDeploy(const AFolder: string): Boolean;
 		{ Private declarations }
 	public
 		{ Public declarations }
@@ -267,10 +275,15 @@ begin
 	configuracao[3] := 'prompt-enhance:' + StringReplace(TradutorConfig.PromptEnhance, #13, '\n', [rfReplaceAll]);
 	configuracao[4] := 'localization-folder:' + TradutorConfig.LocalizationFolder;
 	configuracao[5] := 'last-used-folder:' + TradutorConfig.LastUsedFolder;
+	if TradutorConfig.UseOllamaAI then
+		configuracao[6] := 'ollama-ai:1'
+	else
+		configuracao[6] := 'ollama-ai:0';
+	configuracao[7] := 'dont-translate:' + TradutorConfig.DontTranslate;
 	TFile.WriteAllLines(SC_CONFIG, configuracao, TEncoding.UTF8);
 end;
 
-procedure CarregarConfiguracao;
+procedure CarregarConfiguracao();
 var
 	configuracao: TArray<string>;
 	item, value: string;
@@ -280,7 +293,6 @@ begin
 	begin
 		SetLength(configuracao, ITENS_CONFIG);
 		configuracao := TFile.ReadAllLines(SC_CONFIG, TEncoding.UTF8);
-		TradutorConfig.PromptTranslate := PROMPT_TRANSLATE;
 		for item in configuracao do
 		begin
 			value := Copy(item, Pos(':', item) + 1);
@@ -288,15 +300,19 @@ begin
 				TradutorConfig.Tema := value;
 			if item.Contains('last-used-folder:') then
 				TradutorConfig.LastUsedFolder := value;
-			if item.Contains('prompt-translate') then
-				TradutorConfig.PromptTranslate := value;
+			// if item.Contains('prompt-translate') then
+			// TradutorConfig.PromptTranslate := value;
 			if item.Contains('prompt-enhance') then
 				TradutorConfig.PromptEnhance := value;
+			if item.Contains('dont-translate') then
+				TradutorConfig.DontTranslate := value;
 			if item.Contains('localization-folder') then
 			begin
 				TradutorConfig.LocalizationFolder := value;
 				LastDir := value;
 			end;
+			if item.Contains('ollama-ai') then
+				TradutorConfig.UseOllamaAI := (StrToInt(value) = 1);
 		end;
 
 		TradutorConfig.OpenaiKey := GetEnvironmentVariable('OPENAI_API_KEY');
@@ -315,7 +331,7 @@ begin
 		Key := 'Tag';
 
 	SearchOptions := [loPartialKey, loCaseInsensitive];
-	if PageControl1.ActivePageIndex = 0 then
+	if pcTextStrings.ActivePage = tsTranslation then
 		LocateSuccess := DataSource1.DataSet.Locate(Key, Edit1.Text, SearchOptions)
 	else
 		LocateSuccess := DataSource2.DataSet.Locate(Key, Edit1.Text, SearchOptions);
@@ -325,7 +341,7 @@ procedure TfrmTradutorSC.qryOriginalAfterScroll(DataSet: TDataSet);
 var
 	s: string;
 begin
-	if PageControl1.ActivePageIndex = 0 then
+	if pcTextStrings.ActivePage = tsTranslation then
 		Exit;
 	GetTraducao(DataSource2);
 	if DataSource1.DataSet.State = TDataSetState.dsInactive then
@@ -345,7 +361,7 @@ procedure TfrmTradutorSC.qryTraducaoAfterScroll(DataSet: TDataSet);
 var
 	s: string;
 begin
-	if PageControl1.ActivePageIndex = 1 then
+	if pcTextStrings.ActivePage = tsOriginal then
 		Exit;
 	GetTraducao(DataSource1);
 	if DataSource2.DataSet.State = TDataSetState.dsInactive then
@@ -367,8 +383,11 @@ begin
 	Key := 'Value';
 	if cbProcurarTag.Checked then
 		Key := 'Tag';
+	if cbExata.Checked then
+		Filtro(Format('%s = "%s"', [Key, Trim(Edit1.Text)]), 'tag')
+	else
+		Filtro(Key + ' LIKE "%' + Trim(Edit1.Text) + '%" ', 'tag ');
 
-	Filtro(' WHERE ' + Key + ' LIKE "%' + Trim(Edit1.Text) + '%" ', ' order by tag ')
 end;
 
 procedure TfrmTradutorSC.btnInterromperClick(Sender: TObject);
@@ -403,7 +422,7 @@ procedure TfrmTradutorSC.cbMostrarNovasTagsClick(Sender: TObject);
 begin
 	if cbMostrarNovasTags.Checked then
 	begin
-		Filtro(' WHERE NEW=1', ' order by changed desc');
+		Filtro('NEW=1', 'changed desc');
 		// sbImportarNovasTags.Enabled := not DataSource2.DataSet.IsEmpty;
 	end
 	else
@@ -473,7 +492,7 @@ begin
 		DataSource1.DataSet.Cancel;
 		frmNovaTag.edtTag.Text := '';
 		frmNovaTag.mmTraducao.Text := '';
-		if PageControl1.ActivePageIndex = 1 then
+		if pcTextStrings.ActivePage = tsOriginal then
 		begin
 			frmNovaTag.edtTag.Text := DataSource2.DataSet.FieldByName('tag').AsString;
 			frmNovaTag.mmTraducao.Text := DataSource2.DataSet.FieldByName('valor').AsString;
@@ -528,6 +547,11 @@ begin
 
 end;
 
+procedure TfrmTradutorSC.edDontranslateExit(Sender: TObject);
+begin
+	TradutorConfig.DontTranslate := Trim(edDontranslate.Text);
+end;
+
 procedure TfrmTradutorSC.GetTraducao(const ADatasource: TDataSource);
 begin
 	FTextUndo := StringReplace(ADatasource.DataSet.FieldByName('valor').AsString, '\n', #13, [rfReplaceAll]);
@@ -550,12 +574,12 @@ begin
 	SetLength(APrompts, 2);
 	APrompts[0] := TradutorConfig.PromptTranslate;
 	APrompts[1] := TradutorConfig.PromptEnhance;
-	if InputQuery('Editar Prompt', ['Traduzir', 'Melhorar tradução'], APrompts) then
+	if InputQuery('Edit Prompt', ['Translate', 'Improve translation'], APrompts) then
 	begin
 		TradutorConfig.PromptTranslate := APrompts[0];
 		TradutorConfig.PromptEnhance := APrompts[1];
 		SalvarConfiguracao();
-		ShowMessage('Configuração foi salva. Prompts redefinidos.');
+		ShowMessage('Configuration has been saved. Prompts have been reset.');
 	end;
 
 end;
@@ -597,7 +621,7 @@ begin
 						tthread.Synchronize(tthread.CurrentThread,
 							procedure
 							begin
-								Label1.Caption := 'Linhas exportadas: ' + i.ToString;
+								Label1.Caption := 'Exported lines: ' + i.ToString;
 							end);
 					AQuery.Next;
 					inc(i);
@@ -608,8 +632,8 @@ begin
 					procedure
 					begin
 						SkAnimatedImage1.Animation.Enabled := false;
-						Label1.Caption := 'Linhas exportadas: ' + i.ToString;
-						ShowMessage('Exportação concluída: ' + Filename);
+						Label1.Caption := 'Exported lines: ' + i.ToString;
+						ShowMessage('Export completed: ' + Filename);
 					end);
 				AQuery.Free;
 				aConnection.Free;
@@ -629,7 +653,7 @@ begin
 	if SaveDialog1.Execute() then
 	begin
 		SkAnimatedImage1.Animation.Enabled := true;
-		if FileExists(SaveDialog1.Filename) and (MessageDlg('Arquivo "' + SaveDialog1.Filename + '" já existe, sobrepor?',
+		if FileExists(SaveDialog1.Filename) and (MessageDlg('File "' + SaveDialog1.Filename + '" already exists, override?',
 		  TMsgDlgType.mtWarning, [TMsgDlgBtn.mbNo, TMsgDlgBtn.mbYes], 0) <> mrYes) then
 			Exit;
 		ExportarGlobal(SaveDialog1.Filename, ALocale);
@@ -651,10 +675,10 @@ procedure TfrmTradutorSC.ObtenhasuachaveDeepLTranslate1Click(Sender: TObject);
 var
 	Key: string;
 begin
-	MessageDlg('Este programa irá ler a chave a partir da váriavel de ambiente do seu sistema.'#13 +
-	  'Crie a chave como o nome: OPENAI_API_KEY e atribua o valor.'#13 +
-	  'Recomenda-se criar uma chave especifica evitando usar a sua chave principal.'#13#13 +
-	  'Para informações veja aqui: https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety',
+	MessageDlg('This program will read the key from your system''s environment variable.'#13 +
+		'Create the key with the name: OPENAI_API_KEY and assign the value.'#13 +
+		'It is recommended to create a specific key, avoiding using your main key.'#13#13 +
+		'For information see here:	 https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety',
 	  TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
 end;
 
@@ -662,11 +686,9 @@ procedure TfrmTradutorSC.OnOpenAIError(Sender: TObject);
 begin
 	if (FChatGPT.StatusCode = 400) and (FChatGPT.RequestType = TOAIRequests.orImages) then
 	begin
-		mmOriginal.Lines.Add('Prompt inválido!');
+		mmOriginal.Lines.Add('Invalid prompt!');
 		Exit;
 	end;
-
-	// mmOriginal.Lines.Add('Error ' + FChatGPT.StatusCode.ToString + ' - ' + FChatGPT.ErrorMessage);
 end;
 
 procedure TfrmTradutorSC.OnOpenAIResponse(Sender: TObject);
@@ -682,7 +704,6 @@ begin
 		Lines := Text + Lines;
 
 	end;
-	// mmOriginal.Lines.Text := Lines;
 	mmTraducao.Lines.Text := Lines;
 end;
 
@@ -693,7 +714,7 @@ begin
 		Self.Refresh;
 		TradutorConfig.Tema := ATema;
 	except
-		ShowMessage('Tema "' + ATema + '" não disponível')
+		ShowMessage('Theme "' + ATema + '" not available')
 	end;
 end;
 
@@ -736,14 +757,27 @@ procedure TfrmTradutorSC.cbMostrarVaziosClick(Sender: TObject);
 begin
 	if cbMostrarVazios.Checked then
 	begin
-		Filtro(' WHERE value="" or value = null;', ' order by tag');
-		// sbImportarNovasTags.Enabled := not DataSource2.DataSet.IsEmpty;
+		Filtro('value="" or value = null;', 'tag');
 	end
 	else
 	begin
-		// sbImportarNovasTags.Enabled := false;
 		Filtro('', '');
 	end;
+end;
+
+procedure TfrmTradutorSC.cbNotTranslatedClick(Sender: TObject);
+begin
+	// This takes a lot of time, disabled until new improvements
+	(*
+	  if cbNotTranslated.Checked then
+	  begin
+	  Filtro('EXISTS (SELECT 1 FROM global_enus WHERE value = t.value) ', 'changed desc');
+	  end
+	  else
+	  begin
+	  Filtro('', '');
+	  end;
+	*)
 end;
 
 procedure TfrmTradutorSC.CompararTags1Click(Sender: TObject);
@@ -751,10 +785,24 @@ begin
 	frmCompararTags.ShowModal;
 end;
 
-procedure TfrmTradutorSC.ConfigurarOpenAI;
+procedure TfrmTradutorSC.ConfigurarAI;
 begin
 	FChatGPT := TOpenAI.Create(TradutorConfig.OpenaiKey);
-	FChatGPT.Endpoint := OpenAI_PATH;
+	FChatGPT.UseOllama := TradutorConfig.UseOllamaAI;
+
+	if FChatGPT.UseOllama then
+	begin
+		FChatGPT.Endpoint := OLLAMA_ENDPOINT;
+		FChatGPT.Chat.Model := TOAIModel.mdOllama;
+		FChatGPT.OllamaModel := 'qwen2.5:14b';
+	end
+	else
+	begin
+		// This model, GPT 4o-mini, is perfect, fast and cheap
+		FChatGPT.Endpoint := OAI_ENDPOINT;
+		FChatGPT.Chat.Model := TOAIModel.mdGpt4omini;
+	end;
+
 	FChatGPT.OnResponse := OnOpenAIResponse;
 	FChatGPT.OnError := OnOpenAIError;
 end;
@@ -762,6 +810,11 @@ end;
 procedure TfrmTradutorSC.ConnectionBeforeConnect(Sender: TObject);
 begin
 	Connection.Params.database := FDatabaseLocation + DATABASE_NAME;
+end;
+
+procedure TfrmTradutorSC.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+	SalvarConfiguracao();
 end;
 
 procedure TfrmTradutorSC.FormCreate(Sender: TObject);
@@ -775,18 +828,42 @@ begin
 	TradutorConfig.Tema := '';
 	TradutorConfig.PromptTranslate := StringReplace(PROMPT_TRANSLATE, '\n', #13, [rfReplaceAll]);
 	TradutorConfig.PromptEnhance := StringReplace(PROMPT_ENHANCE, '\n', #13, [rfReplaceAll]);
+
 	CarregarConfiguracao();
+
+	if TradutorConfig.DontTranslate.IsEmpty then
+		TradutorConfig.PromptTranslate := StringReplace(TradutorConfig.PromptTranslate, '%donttranslate%', '', [])
+	else
+		TradutorConfig.PromptTranslate := StringReplace(TradutorConfig.PromptTranslate, '%donttranslate%',
+		  '- do not translate: ' + TradutorConfig.DontTranslate + #13, []);
+
+	edDontranslate.Text := TradutorConfig.DontTranslate;
+
 	AdicionarTemas(TradutorConfig.Tema);
-	ConfigurarOpenAI();
-	PageControl1.ActivePageIndex := 0;
+	ConfigurarAI();
+	pcTextStrings.ActivePage := tsTranslation;
+	UtilizarOllamaAI.Checked := TradutorConfig.UseOllamaAI;
 end;
 
 procedure TfrmTradutorSC.Filtro(const AFiltro, AOrder: string);
 var
 	select: string;
 begin
-	select := StringReplace(SELECT_PTBR, '%where%', AFiltro, []);
-	select := StringReplace(select, '%order%', AOrder, []);
+	if pcTextStrings.ActivePage = tsTranslation then
+		select := SELECT_PTBR
+	else
+		select := SELECT_ENUS;
+
+	if AOrder.IsEmpty then
+		select := StringReplace(select, '%order%', '', [])
+	else
+		select := StringReplace(select, '%order%', 'ORDER BY ' + AOrder, []);
+
+	if AFiltro.IsEmpty then
+		select := StringReplace(select, '%where%', '', [])
+	else
+		select := StringReplace(select, '%where%', 'WHERE ' + AFiltro, []);
+
 	qryTraducao.Open(select);
 end;
 
@@ -795,12 +872,12 @@ begin
 	try
 		CreateTables(qryTraducao, ORIGINAL_LOCALE);
 		CreateTables(qryTraducao, TRANSLATED_LOCALE);
-		Filtro('', ' order by tag');
+		Filtro('', 'tag');
 		dgTraducao.Columns.items[2].Width := (Self.Width div 2) - 300;
 		dgOriginal.Columns.items[2].Width := (Self.Width div 2) - 300;
 	except
 		on e: Exception do
-			ShowMessage('Erro! Banco de dados não pode ser aberto. ' + e.Message)
+			ShowMessage('Error! Database cannot be opened. ' + e.Message)
 	end;
 end;
 
@@ -808,7 +885,7 @@ procedure TfrmTradutorSC.FormShow(Sender: TObject);
 begin
 	btnInterromper.Visible := false;
 	AbrirTabelas();
-	sbTraduzir.Enabled := not TradutorConfig.OpenaiKey.IsEmpty;
+	sbTraduzir.Enabled := (not TradutorConfig.OpenaiKey.IsEmpty) or (TradutorConfig.UseOllamaAI);
 end;
 
 function TfrmTradutorSC.UpdateTableRow(var AQuery: TFDQuery; const ATag, AValue: string;
@@ -837,6 +914,12 @@ begin
 	end;
 end;
 
+procedure TfrmTradutorSC.UtilizarOllamaAIClick(Sender: TObject);
+begin
+	TradutorConfig.UseOllamaAI := UtilizarOllamaAI.Checked;
+	sbTraduzir.Enabled := (not TradutorConfig.OpenaiKey.IsEmpty) or (TradutorConfig.UseOllamaAI);
+end;
+
 procedure TfrmTradutorSC.SelecionarDiretorioSC;
 const
 	SELDIRHELP = 1000;
@@ -847,7 +930,7 @@ begin
 	if Dir.IsEmpty then
 		Dir := TRANSLATED_LOCALIZATION_FOLDER + LOCALIZATION_PTBR;
 
-	if GetFolderDialog(Self.Handle, 'Instalação Star Citizen', Dir) then
+	if GetFolderDialog(Self.Handle, 'Star Citizen instalation', Dir) then
 	begin
 		TradutorConfig.LocalizationFolder := Dir;
 		SalvarConfiguracao();
@@ -891,10 +974,10 @@ var
 	traducao: string;
 begin
 	traducao := StringReplace(mmTraducao.Lines.Text.Trim, #13, '\n', [rfReplaceAll]);
-	if MessageDlg('Esta opção irá substituir TODOS os valores de tags EXATAS.'#13#13 + '"' + Copy(FTextUndo, 1, 15) +
-	  '"... será alterado para:' + #13 + '"' + Copy(traducao, 1, 15) + '"' + #13#13 +
-	  'Certifique-se em ter uma cópia do banco de dados para fins de '#13 +
-	  'recuperação, caso necessário.'#13#13' Continuar?', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbNo, TMsgDlgBtn.mbYes], 0)
+	if MessageDlg('This operation will replace ALL EXACT tag values.'#13#13 + '"' + Copy(FTextUndo, 1, 15) +
+	  '"... it will replace:' + #13 + '"' + Copy(traducao, 1, 15) + '"' + #13#13 +
+	  'Make sure you have a copy of the database for backup purposes, '#13 +
+	  'if necessary.'#13#13' Do you want to continue?', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbNo, TMsgDlgBtn.mbYes], 0)
 	  = mrYes then
 	begin
 		AtualizarDatabase(DataSource1.DataSet.FieldByName('id').AsInteger, '', traducao, FTextUndo);
@@ -931,15 +1014,23 @@ begin
 	end;
 end;
 
-procedure TfrmTradutorSC.PageControl1Change(Sender: TObject);
+procedure TfrmTradutorSC.pcTextStringsChange(Sender: TObject);
 begin
 	if not cbSincronizar.Checked then
 		Exit;
 
-	if PageControl1.ActivePageIndex = 0 then
+	if pcTextStrings.ActivePage = tsTranslation then
 		dgTraducao.DataSource.DataSet.Locate('tag', KeyTag, [loCaseInsensitive])
 	else
 		dgOriginal.DataSource.DataSet.Locate('tag', KeyTag, [loCaseInsensitive]);
+end;
+
+function TfrmTradutorSC.ConfirmDeploy(const AFolder: String): Boolean;
+begin
+	Result := MessageDlg
+	  ('This operation will deploy the translated "global.ini" file directly into the localization folder.'#13#13 +
+	  'Local: ' + AFolder + #13'Do you want to continue?', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbNo, TMsgDlgBtn.mbYes],
+	  0) = mrYes
 end;
 
 procedure TfrmTradutorSC.PastaversoLive1Click(Sender: TObject);
@@ -948,19 +1039,16 @@ begin
 		SelecionarDiretorioSC();
 	if TradutorConfig.LocalizationFolder.IsEmpty or (not DirectoryExists(TradutorConfig.LocalizationFolder)) then
 	begin
-		ShowMessage('Pasta não encontrada, confirme a localização');
+		ShowMessage('Folder not found, confirm location');
 		Exit;
 	end;
 
-	if MessageDlg
-	  ('Esta operação irá implantar o arquivo "global.ini" traduzido diretamente na pasta de localização.'#13#13 +
-	  'Local: ' + TradutorConfig.LocalizationFolder + #13'Continuar?', TMsgDlgType.mtWarning,
-	  [TMsgDlgBtn.mbNo, TMsgDlgBtn.mbYes], 0) = mrYes then
+	if ConfirmDeploy(TradutorConfig.LocalizationFolder) then
 	begin
 		try
 			ExportarGlobal(TradutorConfig.LocalizationFolder + '\' + GLOBAL_INI, TRANSLATED_LOCALE);
 		except
-			ShowMessage('Erro ao tentar implantar arquivo de Localização.');
+			ShowMessage('Error trying to deploy Localization file.');
 		end;
 	end;
 end;
@@ -1005,7 +1093,7 @@ begin
 	tthread.Synchronize(tthread.CurrentThread,
 		procedure
 		begin
-			ShowMessage('Erro ao inserir Tag. Já existe?' + #13#13 + ATag);
+			ShowMessage('Error inserting Tag. Does it already exist?' + #13#13 + ATag);
 		end);
 end;
 
@@ -1129,7 +1217,7 @@ begin
 							tthread.Synchronize(tthread.CurrentThread,
 								procedure
 								begin
-									Label1.Caption := 'Linhas importadas: ' + j.ToString;
+									Label1.Caption := 'Imported lines: ' + j.ToString;
 								end);
 					end;
 				except
@@ -1138,7 +1226,7 @@ begin
 							procedure
 							begin
 								SkAnimatedImage1.Animation.Enabled := false;
-								Label1.Caption := 'Erro ao tentar importar arquivo. Linhas importadas: ' + i.ToString;
+								Label1.Caption := 'Error trying to import file. Imported lines: ' + i.ToString;
 								ErroImportacao(e.Message);
 							end);
 
@@ -1157,11 +1245,11 @@ begin
 						ImportarGlobalini1.Enabled := true;
 						ImportarGlobaliniparabaseIngls1.Enabled := true;
 						SkAnimatedImage1.Animation.Enabled := false;
-						Label1.Caption := 'Linhas importadas: ' + j.ToString;
+						Label1.Caption := 'Imported lines: ' + j.ToString;
 						if not ATagsOnly then
 							ImportacaoConcluida()
 						else
-							Filtro('', 'order by changed');
+							Filtro('', 'changed');
 						SetPaineis(true);
 					end);
 
@@ -1181,8 +1269,8 @@ begin
 		procedure
 		begin
 			SetPaineis(true);
-			ShowMessage('Erro ao tentar importar. Dados revertidos.' + #13 + ErrorMessage);
-			Filtro('', ' order by changed');
+			ShowMessage('Error trying to import. Data reverted.' + #13 + ErrorMessage);
+			Filtro('', 'changed');
 		end);
 
 end;
@@ -1196,21 +1284,18 @@ begin
 	begin
 		if not DirectoryExists(LastDir) then
 		begin
-			ShowMessage('Pasta não encontrada, confirme a localização');
+			ShowMessage('Folder not found, confirm location');
 			Exit;
 		end;
 
-		if MessageDlg
-		  ('Esta operação irá implantar o arquivo "global.ini" traduzido diretamente na pasta de localização.'#13#13 +
-		  'Local: ' + LastDir + #13'Continuar?', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbNo, TMsgDlgBtn.mbYes], 0) = mrYes
-		then
+		if ConfirmDeploy(LastDir) then
 		begin
 			try
 				ExportarGlobal(LastDir + '\' + GLOBAL_INI, TRANSLATED_LOCALE);
 				TradutorConfig.LastUsedFolder := LastDir;
 				SalvarConfiguracao();
 			except
-				ShowMessage('Erro ao tentar implantar arquivo de Localização.');
+				ShowMessage('Error trying to deploy Localization file.');
 			end;
 		end;
 	end;
@@ -1242,8 +1327,8 @@ begin
 		procedure
 		begin
 			SetPaineis(true);
-			ShowMessage('Importação concluída com sucesso.');
-			Filtro('', ' order by changed');
+			ShowMessage('Import completed successfully.');
+			Filtro('', 'changed');
 		end);
 
 end;
@@ -1259,10 +1344,15 @@ begin
 
 	prompt := StringReplace(prompt, '{original}', AOriginal, [rfReplaceAll]);
 
+	if FChatGPT.Chat.Model = TOAIModel.mdGpto3mini then
+	begin
+		FChatGPT.Engine := TOAIEngine.egGpto3mini;
+		FChatGPT.Chat.AddMessage('You are a helpful translator', TMessageRole.mrDeveloper);
+	end;
+
 	FChatGPT.Chat.AddMessage(prompt, TMessageRole.mrUser);
+
 	FChatGPT.RequestType := orChat;
-	FChatGPT.Chat.Model := TOAIModel.mdGpt4omini;
-	FChatGPT.Endpoint := OAI_ENDPOINT;
 	FChatGPT.Chat.MaxTokens := 4096;
 	FChatGPT.Chat.TopP := 1;
 	FChatGPT.Chat.PresencePenalty := 1;
@@ -1290,7 +1380,7 @@ begin
 		Exit;
 
 	SkAnimatedImage1.Animation.Enabled := true;
-	Label1.Caption := 'Traduzindo, aguarde...';
+	Label1.Caption := 'Translating, please wait...';
 
 	tthread.CreateAnonymousThread(
 		procedure
@@ -1322,7 +1412,7 @@ end;
 procedure TfrmTradutorSC.sbLimparFiltroClick(Sender: TObject);
 begin
 	Edit1.Clear;
-	Filtro('', 'order by tag');
+	Filtro('', 'tag');
 end;
 
 procedure TfrmTradutorSC.Splitter1CanResize(Sender: TObject; var NewSize: Integer; var Accept: Boolean);
@@ -1348,8 +1438,8 @@ procedure TfrmTradutorSC.Importarapenasnovastags1Click(Sender: TObject);
 var
 	locale: string;
 begin
-	if MessageDlg('Importar apenas novas tags poderá demorar um tempo considerável,'#13 +
-	  'pois cada uma delas deverá ser verificada no banco de dados.'#13#13' Continuar?', TMsgDlgType.mtWarning,
+	if MessageDlg('Importing only new tags may take considerable time,'#13 +
+	  'because each of them must be checked in the database.'#13#13' Do you want to continue?', TMsgDlgType.mtWarning,
 	  [TMsgDlgBtn.mbNo, TMsgDlgBtn.mbYes], 0) = mrYes then
 	begin
 		if OpenDialog1.Execute() then
@@ -1377,7 +1467,7 @@ begin
 			locale := TRANSLATED_LOCALE;
 
 		btnInterromper.Visible := true;
-		Label1.Caption := 'Copiando banco de dados';
+		Label1.Caption := 'Copying database';
 		SkAnimatedImage1.Animation.Enabled := true;
 
 		SetPaineis(false);
@@ -1401,9 +1491,9 @@ end;
 
 procedure TfrmTradutorSC.Importartudo1Click(Sender: TObject);
 begin
-	if MessageDlg('Atenção, ao importar significa reiniciar o banco de dados com estes novos dados.'#13 +
-	  'O banco de dados atual será salvo com extensão .back.'#13#13' Continuar?', TMsgDlgType.mtWarning,
-	  [TMsgDlgBtn.mbNo, TMsgDlgBtn.mbYes], 0) = mrYes then
+	if MessageDlg('Attention, importing means restarting the database with this new data.'#13 +
+	  'The current database will be saved with the .back extension.'#13#13'Do you want to continue?',
+	  TMsgDlgType.mtWarning, [TMsgDlgBtn.mbNo, TMsgDlgBtn.mbYes], 0) = mrYes then
 	begin
 		if OpenDialog1.Execute() then
 			ImportarGlobal(OpenDialog1.Filename, (Sender as TMenuItem).Tag = 1);

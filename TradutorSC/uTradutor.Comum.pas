@@ -3,7 +3,7 @@ unit uTradutor.Comum;
 interface
 
 const
-   ITENS_CONFIG = 6;
+   ITENS_CONFIG = 8;
    TRANSLATED_LOCALE = 'ptbr';
    ORIGINAL_LOCALE = 'enus';
    BOM_CHARACTER = #$FEFF;
@@ -13,11 +13,12 @@ const
    MAX_PATH = 1024;
    LOCALIZATION_PTBR = 'portuguese_(brazil)';
    LOCALIZATION_EN = 'english';
-   LOCALIZATION_ES = 'spanish_(spain)';
+	LOCALIZATION_ES = 'spanish_(spain)';
    TAG_SAME = 0;
    TAG_NEW = 1;
    TAG_CHANGED = 2;
    TAG_NOTFOUND = 3;
+	clVerde = $0080FF80;
 
 	TRANSLATED_LOCALIZATION_FOLDER = 'C:\Program Files\Roberts Space Industries\StarCitizen\LIVE\data\Localization\';
 
@@ -26,20 +27,21 @@ const
 							 '- keep the same text formatting'#13 +
 							 '- do not translate proper noun or common, universal, technical terms'#13+
 							 '- do not translate patterns enclosed like ~{text}(text), remember that.'#13+
+                      '%donttranslate%'#13+
 							 '- simply translate the given text and do not add notes or explanations, remember that.'#13+
 							 'Translate the text below:' +#13+'{original}';
 
    PROMPT_ENHANCE =
      'O texto a seguir, foi traduzido do inglês: {traducao}\n\nO original é:\n{original}\nMelhore esta tradução, ' +
      'considere o que contexto em inglês da palavra "ship" refere-se a nave espacial e não navio.';
-   SELECT_PTBR =
-     'select Id, datetime(changed) as changed, cast(tag as varchar) as Tag, cast(value as varchar) as Valor, ' +
-	  'cast(Comment as varchar) as Comment, New from Global_ptbr %where% %order%;';
+	SELECT_PTBR =
+		'select t.Id, datetime(t.changed) as changed, cast(t.tag as varchar) as Tag, cast(t.value as varchar) as Valor, '+
+		'cast(t.Comment as varchar) as Comment, t.New from global_ptbr t %where% %order%;';
 	SELECT_ENUS =
-	  'select Id, datetime(changed) as changed, cast(tag as varchar) as Tag, cast(value as varchar) as Valor, ' +
-	  'cast(Comment as varchar) as Comment, New from Global_enus %where% %order%;';
-   OpenAI_PATH = 'https://api.openai.com/v1';
-   CREATE_TABLE = 'CREATE TABLE IF NOT EXISTS global_{locale} (Id INTEGER PRIMARY KEY AUTOINCREMENT,' +
+		'select o.Id, datetime(o.changed) as changed, cast(o.tag as varchar) as Tag, cast(o.value as varchar) as Valor, '+
+		'cast(o.Comment as varchar) as Comment, o.New from global_enus o %where% %order%;';
+
+	CREATE_TABLE = 'CREATE TABLE IF NOT EXISTS global_{locale} (Id INTEGER PRIMARY KEY AUTOINCREMENT,' +
      'Tag TEXT UNIQUE,Value TEXT,Comment TEXT, New Integer, Changed REAL);';
    CREATE_INDEX = 'CREATE INDEX IF NOT EXISTS {field}_{locale}_idx ON global_{locale} ({field} COLLATE NOCASE);';
    DROP_TABLE_IFEXISTS = 'DROP TABLE IF EXISTS global_{locale};' + CREATE_TABLE;
@@ -49,9 +51,11 @@ type
       Tema: string;
       OpenaiKey: string;
       PromptTranslate: string;
-      PromptEnhance: string;
+		PromptEnhance: string;
+		DontTranslate: string;
 		LocalizationFolder: string;
-      LastUsedFolder: string;
+		LastUsedFolder: string;
+		UseOllamaAI: boolean;
    end;
 
 function GetWindowsProgramVersion: String;

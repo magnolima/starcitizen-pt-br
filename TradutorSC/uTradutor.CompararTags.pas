@@ -22,14 +22,13 @@ type
 		btCopiarTags: TButton;
 		PopupMenu1: TPopupMenu;
 		Copiar1: TMenuItem;
-    btAtualizarTagsVazias: TButton;
+		btAtualizarTagsVazias: TButton;
 		procedure btCompararClick(Sender: TObject);
 		procedure btFecharClick(Sender: TObject);
 		procedure btSalvarClick(Sender: TObject);
 		procedure FormShow(Sender: TObject);
 		procedure btRemoverTagsClick(Sender: TObject);
 		procedure btCopiarTagsClick(Sender: TObject);
-		procedure PopupMenu1Popup(Sender: TObject);
 		procedure btAtualizarTagsVaziasClick(Sender: TObject);
 	private
 		{ Private declarations }
@@ -95,9 +94,9 @@ var
 	Lines: TStrings;
 begin
 
-	ShowMessage('A lista de tags será salvar nos arquivos:' + #13#13 + ifThen(lbTagOriginal.Items.Count > 0,
+	ShowMessage('The list of tags will be saved in the files:' + #13#13 + ifThen(lbTagOriginal.Items.Count > 0,
 	  '"' + ArquivoOriginal + '"' + #13, '') + ifThen(lbTagTraducao.Items.Count > 0, '"' + ArquivoTraducao + '"' + #13,
-	  '') + #13 + 'na pasta "' + ExtractFilePath(ParamStr(0)) + '"');
+	  '') + #13 + 'Folder: "' + ExtractFilePath(ParamStr(0)) + '"');
 	if lbTagOriginal.Items.Count > 0 then
 		TFile.WriteAllText(ArquivoOriginal, lbTagOriginal.Items.Text);
 	if lbTagTraducao.Items.Count > 0 then
@@ -165,10 +164,10 @@ begin
 	end;
 
 	if Count > 0 then
-		ShowMessage('As tags vazias da tradução foram preenchidas com o valor original em inglês.' + #13 +
-		  'Total de atualizações: ' + Count.ToString)
+		ShowMessage('Empty translation tags have been filled with the original English value.' + #13 + 'Total updates: ' +
+		  Count.ToString)
 	else
-		ShowMessage('Não foram encontradas tags vazias sem original correspondente');
+		ShowMessage('No empty tags found without matching original');
 end;
 
 procedure TfrmCompararTags.btRemoverTagsClick(Sender: TObject);
@@ -192,7 +191,7 @@ begin
 			try
 				lQueryTarget.ExecSQL;
 			except
-				ShowMessage('Erro ao apagar tag "' + tag + '"');
+				ShowMessage('Error to delete tag "' + tag + '"');
 			end;
 		end;
 	finally
@@ -207,12 +206,6 @@ begin
 	btSalvar.Enabled := false;
 	btRemoverTags.Enabled := false;
 	btCopiarTags.Enabled := false;
-end;
-
-procedure TfrmCompararTags.PopupMenu1Popup(Sender: TObject);
-begin
-	// if Sender is TListBox then
-	// Clipboard.AsText := (Sender as TListBox).Items.Text;
 end;
 
 procedure TfrmCompararTags.btCompararClick(Sender: TObject);
@@ -267,7 +260,7 @@ begin
 		LoopTags(lbTagOriginal);
 
 		if lDifferences = 0 then
-			ShowMessage('Não há diferenças entre as Tags');
+			ShowMessage('There are no differences between the Tags');
 
 	finally
 		Screen.Cursor := crDefault;
