@@ -6,7 +6,7 @@ object frmTradutorSC: TfrmTradutorSC
   Margins.Right = 5
   Margins.Bottom = 5
   Caption = 'Tradutor Star Citizen'
-  ClientHeight = 1045
+  ClientHeight = 1065
   ClientWidth = 1610
   Color = clBtnFace
   Constraints.MinHeight = 851
@@ -131,7 +131,7 @@ object frmTradutorSC: TfrmTradutorSC
     Left = 0
     Top = 89
     Width = 1610
-    Height = 894
+    Height = 914
     Margins.Left = 5
     Margins.Top = 5
     Margins.Right = 5
@@ -140,7 +140,7 @@ object frmTradutorSC: TfrmTradutorSC
     TabOrder = 1
     object Splitter1: TSplitter
       Left = 1
-      Top = 389
+      Top = 409
       Width = 1608
       Height = 4
       Cursor = crVSplit
@@ -160,7 +160,7 @@ object frmTradutorSC: TfrmTradutorSC
       Left = 1
       Top = 49
       Width = 1608
-      Height = 340
+      Height = 360
       Margins.Left = 5
       Margins.Top = 5
       Margins.Right = 5
@@ -179,7 +179,7 @@ object frmTradutorSC: TfrmTradutorSC
           Left = 0
           Top = 0
           Width = 1600
-          Height = 300
+          Height = 320
           Margins.Left = 5
           Margins.Top = 5
           Margins.Right = 5
@@ -235,7 +235,7 @@ object frmTradutorSC: TfrmTradutorSC
           Left = 0
           Top = 0
           Width = 1600
-          Height = 300
+          Height = 320
           Margins.Left = 5
           Margins.Top = 5
           Margins.Right = 5
@@ -281,7 +281,7 @@ object frmTradutorSC: TfrmTradutorSC
     end
     object Panel4: TPanel
       Left = 1
-      Top = 393
+      Top = 413
       Width = 1608
       Height = 500
       Margins.Left = 5
@@ -464,7 +464,7 @@ object frmTradutorSC: TfrmTradutorSC
         Margins.Top = 5
         Margins.Right = 5
         Margins.Bottom = 5
-        Anchors = [akLeft, akTop, akRight]
+        Anchors = [akLeft, akTop, akRight, akBottom]
         TabOrder = 6
         OnExit = edDontranslateExit
       end
@@ -484,16 +484,16 @@ object frmTradutorSC: TfrmTradutorSC
         1608
         48)
       object cbMostrarNovasTags: TCheckBox
-        Left = 1158
+        Left = 1110
         Top = 9
-        Width = 208
+        Width = 260
         Height = 26
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
         Margins.Bottom = 5
         Anchors = [akTop, akRight]
-        Caption = 'Show new tags'
+        Caption = 'Show new tags or changed'
         TabOrder = 0
         OnClick = cbMostrarNovasTagsClick
       end
@@ -512,9 +512,9 @@ object frmTradutorSC: TfrmTradutorSC
         OnClick = cbMostrarVaziosClick
       end
       object cbNotTranslated: TCheckBox
-        Left = 904
+        Left = 880
         Top = 9
-        Width = 244
+        Width = 220
         Height = 26
         Margins.Left = 5
         Margins.Top = 5
@@ -530,7 +530,7 @@ object frmTradutorSC: TfrmTradutorSC
   end
   object Panel3: TPanel
     Left = 0
-    Top = 983
+    Top = 1003
     Width = 1610
     Height = 62
     Margins.Left = 5
@@ -1075,11 +1075,13 @@ object frmTradutorSC: TfrmTradutorSC
   end
   object Connection: TFDConnection
     Params.Strings = (
-      'DriverID=SQLite')
+      'DriverID=SQLite'
+      'synchronous=OFF'
+      'encoding=UTF8')
     LoginPrompt = False
     BeforeConnect = ConnectionBeforeConnect
-    Left = 102
-    Top = 603
+    Left = 66
+    Top = 591
   end
   object FDPhysSQLiteDriverLink1: TFDPhysSQLiteDriverLink
     DriverID = 'SQLite'

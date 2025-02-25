@@ -3,11 +3,11 @@ unit uTradutor.CompararTags;
 interface
 
 uses
-	Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+	Winapi.Windows, Winapi.Messages, IdHashMessageDigest, System.Variants, System.Classes, Vcl.Graphics,
 	Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
 	FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
 	FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
-	FireDAC.Comp.DataSet, Vcl.Menus;
+	FireDAC.Comp.DataSet, Vcl.Menus, System.SysUtils;
 
 type
 	TfrmCompararTags = class(TForm)
@@ -23,6 +23,9 @@ type
 		PopupMenu1: TPopupMenu;
 		Copiar1: TMenuItem;
 		btAtualizarTagsVazias: TButton;
+		btHashCompare: TButton;
+		OpenDialog1: TOpenDialog;
+		Memo1: TMemo;
 		procedure btCompararClick(Sender: TObject);
 		procedure btFecharClick(Sender: TObject);
 		procedure btSalvarClick(Sender: TObject);
@@ -30,6 +33,7 @@ type
 		procedure btRemoverTagsClick(Sender: TObject);
 		procedure btCopiarTagsClick(Sender: TObject);
 		procedure btAtualizarTagsVaziasClick(Sender: TObject);
+		procedure btHashCompareClick(Sender: TObject);
 	private
 		{ Private declarations }
 	public
@@ -42,9 +46,21 @@ var
 implementation
 
 uses
-	System.StrUtils, System.IOUtils, uTradutor.Main, uTradutor.Comum, ClipBrd;
+	System.StrUtils, System.IOUtils, uTradutor.Main, uTradutor.Comum, ClipBrd, IdGlobal;
 
 {$R *.dfm}
+
+function MD5FromString(const AText: string): string;
+var
+	MD5: TIdHashMessageDigest5;
+begin
+	MD5 := TIdHashMessageDigest5.Create;
+	try
+		Result := MD5.HashStringAsHex(AText);
+	finally
+		MD5.Free;
+	end;
+end;
 
 procedure TfrmCompararTags.btCopiarTagsClick(Sender: TObject);
 var
@@ -69,7 +85,7 @@ begin
 				lQueryTarget.SQL.Text := 'INSERT INTO global_' + TRANSLATED_LOCALE +
 				  ' (Tag, Value, Comment, Changed, New) VALUES (:Tag,:Value, :Comment, :Changed, :New)';
 				frmTradutorSC.UpdateTableRow(lQueryTarget, lQueryTarget.ParamByName('tag').AsString,
-				  lQueryTarget.ParamByName('value').AsString, true);
+				  lQueryTarget.ParamByName('value').AsWideString, true);
 			end;
 		end;
 
@@ -84,6 +100,100 @@ end;
 procedure TfrmCompararTags.btFecharClick(Sender: TObject);
 begin
 	Close;
+end;
+
+procedure SetDiffAsNew(const AValue, ATag: string);
+var
+	lQuery: TFDQuery;
+begin
+	lQuery := TFDQuery.Create(nil);
+	try
+		lQuery.Connection := frmTradutorSC.Connection;
+		lQuery.SQL.Text := 'UPDATE global_' + TRANSLATED_LOCALE + ' set VALUE=:value, NEW=1 where Tag=:tag;';
+		lQuery.ParamByName('value').AsWideString := AValue;
+		lQuery.ParamByName('tag').AsString := ATag;
+		lQuery.ExecSQL;
+		lQuery.SQL.Text := 'UPDATE global_' + ORIGINAL_LOCALE + ' set VALUE=:value, NEW=0, COMMENT=''CHANGED'' where Tag=:tag;';
+		lQuery.ParamByName('value').AsWideString := AValue;
+		lQuery.ParamByName('tag').AsString := ATag;
+		lQuery.ExecSQL;
+
+	finally
+		lQuery.Free;
+	end;
+end;
+
+procedure TfrmCompararTags.btHashCompareClick(Sender: TObject);
+var
+	lQuerySource: TFDQuery;
+	aLine, aTag, aValue: String;
+	aHashCurrent, aHashNew: String;
+	ini: TextFile;
+	i, p: integer;
+begin
+
+	if Memo1.Visible then
+	begin
+		Memo1.Visible := false;
+		Memo1.Clear;
+		btHashCompare.Caption := 'Check for Diffs';
+		Exit;
+	end;
+
+	if not OpenDialog1.Execute() then
+		Exit;
+
+	lQuerySource := TFDQuery.Create(Self);
+
+	Memo1.Clear;
+	Memo1.Visible := true;
+
+	try
+		Screen.Cursor := crHourGlass;
+		lQuerySource.Connection := frmTradutorSC.Connection;
+		lQuerySource.SQL.Text := 'select id,tag,value,hash from global_' + ORIGINAL_LOCALE + ' where tag=:tag';
+
+		AssignFile(ini, OpenDialog1.Filename, CP_UTF8);
+		Reset(ini);
+		i := 0;
+		while not Eof(ini) do
+		begin
+
+			if Self.tag = 1 then
+				break;
+			Readln(ini, aLine);
+			if (i = 0) and (not aLine.IsEmpty) and (aLine[1] = BOM_CHARACTER) then
+				aLine := Copy(aLine, 2);
+
+			p := Pos('=', aLine);
+			aTag := Copy(aLine, 1, p - 1);
+			aValue := Trim(Copy(aLine, p + 1));
+
+			lQuerySource.ParamByName('tag').AsString := aTag;
+			lQuerySource.Open;
+			aHashCurrent := MD5FromString(Trim(lQuerySource.FieldByName('Value').AsWideString));
+			aHashNew := MD5FromString(aValue);
+
+			if aHashCurrent <> aHashNew then
+			begin
+				// Memo1.Lines.Add(aTag + ' Hash: ' + aHashCurrent + ' New: ' + aHashNew);
+				if lQuerySource.FieldByName('Value').AsString <> aValue then
+				begin
+					SetDiffAsNew(aValue, aTag);
+					Memo1.Lines.Add('=' + lQuerySource.FieldByName('Value').AsWideString);
+					Memo1.Lines.Add('=' + aValue);
+					Memo1.Lines.Add('');
+				end;
+			end;
+
+			lQuerySource.Close;
+		end;
+	finally
+		lQuerySource.Free;
+		CloseFile(ini);
+		btHashCompare.Caption := 'Checked!';
+	end;
+
 end;
 
 procedure TfrmCompararTags.btSalvarClick(Sender: TObject);
@@ -114,7 +224,7 @@ var
 		lQuerySource.Close;
 		lQuerySource.ParamByName('tag').AsString := lQueryTarget.FieldByName('tag').AsString;
 		lQuerySource.Open;
-		Result := lQuerySource.FieldByName('value').AsString;
+		Result := lQuerySource.FieldByName('value').AsWideString;
 	end;
 
 	procedure SetValueToTranslation(const value: string; const id: integer);
@@ -125,7 +235,7 @@ var
 		try
 			lQuery.Connection := frmTradutorSC.Connection;
 			lQuery.SQL.Text := 'UPDATE global_' + TRANSLATED_LOCALE + ' set VALUE=:value where Id=:id;';
-			lQuery.ParamByName('value').AsString := value;
+			lQuery.ParamByName('value').AsWideString := value;
 			lQuery.ParamByName('id').AsInteger := id;
 			lQuery.ExecSQL;
 			inc(Count);

@@ -233,6 +233,7 @@ end;
 
 procedure TEdit.WMPaste(var Message: TMessage);
 begin
+
 	FIsPasting := true;
 	try
 		inherited;
@@ -287,8 +288,8 @@ procedure CarregarConfiguracao();
 var
 	configuracao: TArray<string>;
 	item, value: string;
-begin
 
+begin
 	if FileExists(SC_CONFIG) then
 	begin
 		SetLength(configuracao, ITENS_CONFIG);
@@ -349,7 +350,8 @@ begin
 
 	if DataSource1.DataSet.Locate('tag', KeyTag, [loCaseInsensitive]) then
 	begin
-		s := StringReplace(DataSource1.DataSet.FieldByName('valor').AsString, '\n', #13, [rfReplaceAll]);
+		s := StringReplace(DataSource1.DataSet.FieldByName('valor').AsWideString, '\n', #13, [rfReplaceAll]);
+
 		mmOriginal.Lines.Text := s;
 	end
 	else
@@ -369,7 +371,7 @@ begin
 
 	if DataSource2.DataSet.Locate('tag', KeyTag, [loCaseInsensitive]) then
 	begin
-		s := StringReplace(DataSource2.DataSet.FieldByName('valor').AsString, '\n', #13, [rfReplaceAll]);
+		s := StringReplace(DataSource2.DataSet.FieldByName('valor').AsWideString, '\n', #13, [rfReplaceAll]);
 		mmOriginal.Lines.Text := s;
 	end
 	else
@@ -495,7 +497,7 @@ begin
 		if pcTextStrings.ActivePage = tsOriginal then
 		begin
 			frmNovaTag.edtTag.Text := DataSource2.DataSet.FieldByName('tag').AsString;
-			frmNovaTag.mmTraducao.Text := DataSource2.DataSet.FieldByName('valor').AsString;
+			frmNovaTag.mmTraducao.Text := DataSource2.DataSet.FieldByName('valor').AsWideString;
 		end;
 
 		frmNovaTag.ShowModal;
@@ -554,7 +556,7 @@ end;
 
 procedure TfrmTradutorSC.GetTraducao(const ADatasource: TDataSource);
 begin
-	FTextUndo := StringReplace(ADatasource.DataSet.FieldByName('valor').AsString, '\n', #13, [rfReplaceAll]);
+	FTextUndo := StringReplace(ADatasource.DataSet.FieldByName('valor').AsWideString, '\n', #13, [rfReplaceAll]);
 	mmTraducao.Lines.Text := FTextUndo;
 	KeyTag := ADatasource.DataSet.FieldByName('tag').AsString;
 	Label1.Caption := '(' + ADatasource.DataSet.FieldByName('id').AsString + ') TAG: ' + KeyTag;
@@ -612,7 +614,7 @@ begin
 				begin
 					if Self.Tag = 1 then
 						break;
-					aLinha := StringReplace(AQuery.FieldByName('Valor').AsString.Trim, #10, '', [rfReplaceAll]);
+					aLinha := StringReplace(AQuery.FieldByName('Valor').AsWideString.Trim, #10, '', [rfReplaceAll]);
 					aLinha := AQuery.FieldByName('Tag').AsString.Trim + '=' + aLinha;
 
 					ini.WriteLine(aLinha);
@@ -893,7 +895,7 @@ const ANew: Boolean = false): Boolean;
 begin
 	AQuery.Close;
 	AQuery.Params.ParamByName('Tag').AsString := ATag;
-	AQuery.Params.ParamByName('Value').AsString := AValue;
+	AQuery.Params.ParamByName('Value').AsWideString := AValue;
 	AQuery.Params.ParamByName('Changed').AsDateTime := Now();
 
 	if ANew then
@@ -952,16 +954,16 @@ begin
 		if ATag.IsEmpty then
 		begin
 			lQuery.SQL.Text := 'UPDATE GLOBAL_PTBR SET NEW=0,VALUE=:VALUE, CHANGED=datetime() WHERE VALUE=:OLD_VALUE;';
-			lQuery.ParamByName('VALUE').AsString := AValor.Trim;
-			lQuery.ParamByName('OLD_VALUE').AsString := AOldValor.Trim;
+			lQuery.ParamByName('VALUE').AsWideString := AValor.Trim;
+			lQuery.ParamByName('OLD_VALUE').AsWideString := AOldValor.Trim;
 		end
 		else
 		begin
 			lQuery.SQL.Text :=
 			  'UPDATE GLOBAL_PTBR SET NEW=0,VALUE=:VALUE, COMMENT=:COMMENT, CHANGED=datetime() WHERE Id=:Id;';
 			lQuery.ParamByName('Id').AsInteger := id;
-			lQuery.ParamByName('VALUE').AsString := AValor.Trim;
-			lQuery.ParamByName('COMMENT').AsString := 'translated';
+			lQuery.ParamByName('VALUE').AsWideString := AValor.Trim;
+			lQuery.ParamByName('COMMENT').AsWideString := 'translated';
 		end;
 		lQuery.ExecSQL;
 	finally
@@ -1074,7 +1076,7 @@ begin
 		try
 			qryCmp.Connection := AQuery.Connection;
 			qryCmp.SQL.Text := 'SELECT Value FROM global_' + ALocale + ' WHERE Value = :value;';
-			qryCmp.ParamByName('value').AsString := AQuery.FieldByName('value').AsString;
+			qryCmp.ParamByName('value').AsWideString := AQuery.FieldByName('value').AsWideString;
 			qryCmp.Open;
 			// something has changed...
 			if qryCmp.IsEmpty then

@@ -3,8 +3,8 @@ object frmCompararTags: TfrmCompararTags
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Compare tags'
-  ClientHeight = 619
-  ClientWidth = 973
+  ClientHeight = 603
+  ClientWidth = 964
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -39,9 +39,9 @@ object frmCompararTags: TfrmCompararTags
   end
   object lbTagOriginal: TListBox
     Tag = 1
-    Left = 24
+    Left = 10
     Top = 334
-    Width = 925
+    Width = 939
     Height = 205
     Margins.Left = 5
     Margins.Top = 5
@@ -52,8 +52,8 @@ object frmCompararTags: TfrmCompararTags
     TabOrder = 0
   end
   object btComparar: TButton
-    Left = 24
-    Top = 561
+    Left = 10
+    Top = 549
     Width = 113
     Height = 38
     Margins.Left = 5
@@ -66,7 +66,7 @@ object frmCompararTags: TfrmCompararTags
   end
   object btFechar: TButton
     Left = 836
-    Top = 561
+    Top = 549
     Width = 113
     Height = 38
     Margins.Left = 5
@@ -78,9 +78,9 @@ object frmCompararTags: TfrmCompararTags
     OnClick = btFecharClick
   end
   object lbTagTraducao: TListBox
-    Left = 24
+    Left = 10
     Top = 58
-    Width = 925
+    Width = 939
     Height = 205
     Margins.Left = 5
     Margins.Top = 5
@@ -92,7 +92,7 @@ object frmCompararTags: TfrmCompararTags
   end
   object btSalvar: TButton
     Left = 156
-    Top = 561
+    Top = 549
     Width = 113
     Height = 38
     Margins.Left = 5
@@ -133,9 +133,9 @@ object frmCompararTags: TfrmCompararTags
     OnClick = btCopiarTagsClick
   end
   object btAtualizarTagsVazias: TButton
-    Left = 310
-    Top = 561
-    Width = 242
+    Left = 514
+    Top = 549
+    Width = 195
     Height = 38
     Margins.Left = 5
     Margins.Top = 5
@@ -145,11 +145,45 @@ object frmCompararTags: TfrmCompararTags
     TabOrder = 7
     OnClick = btAtualizarTagsVaziasClick
   end
+  object btHashCompare: TButton
+    Left = 279
+    Top = 549
+    Width = 195
+    Height = 38
+    Margins.Left = 5
+    Margins.Top = 5
+    Margins.Right = 5
+    Margins.Bottom = 5
+    Caption = 'Check for Diffs'
+    TabOrder = 8
+    OnClick = btHashCompareClick
+  end
+  object Memo1: TMemo
+    Left = 10
+    Top = 58
+    Width = 944
+    Height = 481
+    Margins.Left = 5
+    Margins.Top = 5
+    Margins.Right = 5
+    Margins.Bottom = 5
+    Lines.Strings = (
+      'Memo1')
+    TabOrder = 9
+    Visible = False
+  end
   object PopupMenu1: TPopupMenu
     Left = 180
     Top = 176
     object Copiar1: TMenuItem
       Caption = 'Copiar'
     end
+  end
+  object OpenDialog1: TOpenDialog
+    DefaultExt = 'ini'
+    Filter = 'Global.ini|*.ini|Todos|*.*'
+    Title = 'Importar Global.ini'
+    Left = 72
+    Top = 102
   end
 end
