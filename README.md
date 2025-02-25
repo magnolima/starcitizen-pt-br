@@ -2,7 +2,7 @@
 
 Tradução para o português brasileiro do jogo *Star Citizen* para SC Alpha 4.x.
 
-Esta tradução não se iniciou do zero, estamos apenas complementando e adequando.
+Esta tradução contém milhares de correções na tradução e ajustes nos textos contendo caracteres especiais para UTF-8 que estavam sendo perdidos nesta e em outras traduções, principalmente em uso de palavras de origem "alien" (Xi'an, Banu, etc), quando se pretende preservar a pronuncia correta, como por exemplo, palavras como: San'tok.yāi, Chui’ā, Thlūn, entre várias outras que estavam sendo grafadas erroneamente.
 
 Envie sua contribuição na opção acima "Issues" para termos uma boa curadoria neste projeto, caso assim deseje.
 
